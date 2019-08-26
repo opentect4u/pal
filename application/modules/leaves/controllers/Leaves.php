@@ -400,7 +400,7 @@ class Leaves extends MX_Controller {
 
 /**********************REPORTS************************/
 
-    //For Leave Leaser
+    //For Leave Ledger
     public function f_ledger(){
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -553,6 +553,111 @@ class Leaves extends MX_Controller {
 
     }
 
+
+    //For Leave Ledger For All Employees
+    public function f_ledger_all(){
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            //Parameter Dates
+            $fromDt = $this->input->post('from_date');
+            $toDate = $this->input->post('to_date');
+
+            $data['dates'] = array($fromDt,$toDate);
+
+            $_SESSION['frm_dt'] = $fromDt;
+            $_SESSION['to_dt']  = $toDate;
+
+            $data['leave_ledg_all']  = $this->Leave->f_get_leave_ledger_dtls($fromDt,$toDate);
+
+            $script['script'] = [
+            
+                '/assets/plugins/footable/js/footable.all.min.js',
+    
+                '/assets/plugins/bootstrap-select/bootstrap-select.min.js',
+                
+                '/assets/plugins/datatables/jquery.dataTables.min.js'
+            ];
+
+            $this->load->view('reports/ledger/leaveledger_all', $data);
+
+            $this->load->view('footer', $script);
+        }
+        else{
+
+            $this->load->view('reports/ledger/ledger_form_all');
+            
+            $script['script'] = [
+            
+                '/assets/plugins/footable/js/footable.all.min.js',
+    
+                '/assets/plugins/bootstrap-select/bootstrap-select.min.js'
+            
+            ];
+
+            $this->load->view('footer', $script);
+        }
+
+    }
+
+//Leave Ledger Report In Excel
+    public function leaveldg_xlsx() {
+
+        $this->load->library('excel');
+
+        $object = new PHPExcel();
+        $object->setActiveSheetIndex(0);
+
+        $table_column = array("Employee Code","Name","Date","SL","SL Balance",
+                              "EL","EL Balance","Comp.Off","Comp.Off Balance");
+
+        $column = 0;
+
+        foreach($table_column as $values){
+            $object->getActiveSheet()->SetCellValueByColumnAndRow($column,1,$values);
+            $column++;  
+        }
+ 
+
+        $xldata = $this->Leave->f_get_leave_ledger_dtls($_SESSION['frm_dt'],$_SESSION['to_dt']);
+        $rowCount = 2;
+
+        foreach($xldata as $row){
+         
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(0,$rowCount,$row->emp_code);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(1,$rowCount,$row->emp_name);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(2,$rowCount,$row->balance_dt);
+
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->ml_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->ml_bal);
+
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->el_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(6,$rowCount,$row->el_bal);
+
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(7,$rowCount,$row->comp_off_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(8,$rowCount,$row->comp_off_bal);
+            
+            
+
+
+
+            $rowCount++;
+        }
+
+        $filename = "All_Leave_Ledger-".date("d-m-Y H-i-s").'.xlsx';
+        $object->getActiveSheet()->setTitle("All Leave Ledger");
+
+        header('Content-Type:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0');
+
+        $writer = PHPExcel_IOFactory::createWriter($object,'Excel2007');
+        $writer->save('php://output');
+       
+        exit;
+    }
+
+
     //For Leave Details
     public function f_details(){
 
@@ -690,49 +795,6 @@ class Leaves extends MX_Controller {
             $this->load->view('footer', $script);
         }
         else{
-
-            //IF User is a HOD
-            /*if($this->session->userdata('loggedin')->emp_type == 'H'){
-
-                //Select Employees dependent on this HOD
-                $emp_list   =   $this->Leave->f_get_particulars("md_manager", array('managed_emp'), array("manage_by" => $this->session->userdata('loggedin')->user_id), 0);
-                
-                $where_in = [$this->session->userdata('loggedin')->user_id];
-
-                foreach($emp_list as $e_list){
-
-                    array_push($where_in, $e_list->managed_emp);
-                    
-                }
-                
-                //Unrecommended Leave List
-                $select     =   array(
-
-                    "m.emp_code", "m.emp_name"
-
-                );
-
-                $data['emp_dtls']     =   $this->Leave->f_get_particulars_in("md_employee m", $select, $where_in, NULL);
-                
-            }//IF User is a HR
-            else if($this->session->userdata('loggedin')->emp_type == 'HR'){
-
-                $select     =   array(
-
-                    "emp_code", "emp_name"
-
-                );
-
-                $data['emp_dtls']     =   $this->Leave->f_get_particulars("md_employee", $select, NULL, 0);
-
-            }
-            else{
-
-                $data['emp_dtls'] = NULL;
-
-            }*/
-
-
 
             $this->load->view('reports/details/form_all');
             

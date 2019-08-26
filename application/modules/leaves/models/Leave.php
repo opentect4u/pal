@@ -164,4 +164,19 @@ class Leave extends CI_Model {
         return $sql->result();
     }
 
+    //Fetching Leave Transaction Ledger For All Employee With in a given period 
+    public function f_get_leave_ledger_dtls($from_dt,$to_dt){
+        $sql = $this->db->query("select a.trans_cd trans_cd,a.balance_dt balance_dt,
+                                        a.emp_code emp_code,b.emp_name emp_name,
+                                        a.ml_in ml_in,a.ml_out ml_out,a.ml_bal ml_bal,
+                                        a.el_in el_in,a.el_out el_out,a.el_bal el_bal,
+                                        a.comp_off_in comp_off_in,a.comp_off_out comp_off_out,a.comp_off_bal comp_off_bal
+                                from td_leave_balance a,md_employee b
+                                where a.emp_code = b.emp_code
+                                and   a.balance_dt between '$from_dt' and '$to_dt' 
+                                order by a.emp_code,a.balance_dt,a.trans_cd");
+
+        return $sql->result();
+    }
+
 }

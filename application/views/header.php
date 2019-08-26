@@ -167,6 +167,8 @@
                                         <?php
                                             if($this->session->userdata('loggedin')->emp_type == 'HR'){
                                         ?>
+                                            <li><a href="<?php echo site_url('leave/ledger_all'); ?>">All Leave Ledger</a></li>
+
                                             <li><a href="<?php echo site_url('leave/details_all'); ?>">All Leave Details</a></li>
                                         <?php
                                             }    
