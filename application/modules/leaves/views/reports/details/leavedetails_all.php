@@ -51,12 +51,12 @@
                             <th>Employee Code</th>
                             <th>Name</th>
                             <th>Leave Type</th>
-                            <th>Leave Period</th>
+                            <!--<th>Leave Period</th>-->
                             <th>No.of Days</th>
-                            <th>Recommendation Date</th>
+                            <!--<th>Recommendation Date</th>
                             <th>Recommended By</th>
                             <th>Approval Date</th>
-                            <th>Reason</th>
+                            <th>Reason</th>-->
 
                         </tr>
 
@@ -70,6 +70,24 @@
                             
                             foreach($leave_dtls_all as $l_dtls) {
 
+                                if($l_dtls->leave_type=='E'){
+                                    $leaveDtls = "EL";
+                                }elseif($l_dtls->leave_type=='HE'){
+                                    $leaveDtls = "Half EL";    
+                                }elseif($l_dtls->leave_type=='M'){
+                                    $leaveDtls = "Sick Leave";
+                                }elseif($l_dtls->leave_type=='HM'){
+                                    $leaveDtls = "Half Sick Leave";
+                                }elseif($l_dtls->leave_type=='C'){
+                                    $leaveDtls = "Comp.Off";
+                                }elseif($l_dtls->leave_type=='HC'){
+                                    $leaveDtls = "Half Comp.Off";
+                                }elseif($l_dtls->leave_type=='N'){
+                                    $leaveDtls = "National Holidays";
+                                }else{
+                                    $leaveDtls = "Half National Holidays";
+                                }
+
                         ?>
 
                                 <tr>
@@ -78,13 +96,13 @@
                                     <td><?php echo date('d-m-Y', strtotime($l_dtls->trans_dt)); ?></td>
                                     <td><?php echo $l_dtls->emp_code; ?></td>
                                     <td><?php echo $l_dtls->emp_name;?></td>
-                                    <td><?php echo $l_dtls->leave_type; ?></td>
-                                    <td><?php echo date('d-m-Y', strtotime($l_dtls->from_dt)).' To '.date('d-m-Y', strtotime($l_dtls->to_dt)); ?></td>
+                                    <td><?php echo $leaveDtls; ?></td>
+                                    <!--<td><?php echo date('d-m-Y', strtotime($l_dtls->from_dt)).' To '.date('d-m-Y', strtotime($l_dtls->to_dt)); ?></td>-->
                                     <td><?php echo $l_dtls->amount; ?></td>
-                                    <td><?php echo date('d-m-Y', strtotime($l_dtls->recommend_dt)); ?></td>
+                                    <!--<td><?php echo date('d-m-Y', strtotime($l_dtls->recommend_dt)); ?></td>
                                     <td><?php echo $l_dtls->recommend_by; ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($l_dtls->approval_dt)); ?></td>
-                                    <td><?php echo $l_dtls->reason; ?></td>
+                                    <td><?php echo $l_dtls->reason; ?></td>-->
                                     <!--<td><a href="javascript:void(0)" class="view" title="View" id="<?php //echo $l_dtls->trans_cd; ?>">
 
                                             <i class="mdi mdi-36px mdi-eye" style="color: #7b8299"></i>
