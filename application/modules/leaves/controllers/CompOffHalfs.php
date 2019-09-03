@@ -1,6 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function to apply Half Comp off Aplication.                *   
+ *  Means employee informing Mgmt. that he/she has worked on   *
+ *  holidays                                                   *
+ ***************************************************************/
+
+
 class CompOffHalfs extends MX_Controller {
 
 	public function __construct(){

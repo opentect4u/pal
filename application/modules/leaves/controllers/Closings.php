@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function used to calculate closing balances of leaves on   *
+ *  approval by HR                                             *
+ ***************************************************************/
+
+
 class Closings extends MX_Controller {
 
 	public function __construct(){

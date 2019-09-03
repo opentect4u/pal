@@ -165,7 +165,7 @@ class Auths extends MX_Controller {
 
             $link['link']       =   array("/assets/plugins/css-chart/css-chart.css");
 
-            $link['title']      =   'Mysore Home';
+            $link['title']      =   'IVAC';
 
             $script['script']   =   [];
 
@@ -180,7 +180,7 @@ class Auths extends MX_Controller {
             $select = array(
                 
                 "trans_cd", "ml_bal", "el_bal",
-                "comp_off_bal", "MAX(balance_dt) balance_dt"
+                "comp_off_bal1", "MAX(balance_dt) balance_dt"
             
             );
 

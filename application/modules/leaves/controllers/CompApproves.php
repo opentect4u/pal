@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function to Approve all Half & Full Comp off Aplication.   *   
+ *  Means employee informing Mgmt. that he/she has worked on   *
+ *  holidays                                                   *
+ ***************************************************************/
+
 class CompApproves extends MX_Controller {
 
 	public function __construct(){
@@ -71,7 +77,7 @@ class CompApproves extends MX_Controller {
 
             "t.trans_cd", "t.trans_dt", "m.emp_name",
 
-            "t.recommend_remarks", "d.dept_name"
+            "t.recommend_remarks","t.recommend_by" ,"d.dept_name"
 
         );
 
@@ -107,7 +113,7 @@ class CompApproves extends MX_Controller {
 
             //For Approval
             if($this->input->post('approve_status')){
-                var_dump($this->session->flashdata('valid')); die;
+                //var_dump($this->session->flashdata('valid')); die;
                 //For Leave Trans
                 $data_array =   array (
 
@@ -141,7 +147,7 @@ class CompApproves extends MX_Controller {
                     
                     //Checking if row present in current date
                     $trans_cd = $this->Leave->f_get_particulars('td_leave_balance', array("trans_cd"), array("emp_code" => $this->session->flashdata('valid')['emp_code'], "balance_dt" => date('Y-m-d')), 1);
-                    echo($trans_cd); die;
+                    //echo($trans_cd); die;
                     if(!isset($trans_cd)){
                         
                         //Last balance date
@@ -163,6 +169,20 @@ class CompApproves extends MX_Controller {
 
                         $leave_balance = $this->Leave->f_get_particulars('td_leave_balance', $select, $where, 1);
 
+
+                        $select1 = array(
+                            "trans_dt", "recommend_dt", "from_dt", 
+                            "to_dt","remarks","recommendation_status"
+                        );
+
+                        $where1   = array(
+                            "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+                            "rejection_status"=> 0
+                        );
+
+                        $other_dtls = $this->Leave->f_get_particulars('td_comp_apply', $select1, $where1, 1);
+
+
                         $data_array =   array(
 
                             "balance_dt"    =>  date('Y-m-d'),
@@ -170,6 +190,18 @@ class CompApproves extends MX_Controller {
                             "emp_code"      =>  $this->session->flashdata('valid')['emp_code'],
                             
                             "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+
+                            "status"        => $other_dtls->recommendation_status,
+
+                            "application_dt" => $other_dtls->trans_dt,
+
+                            "recomed_dt"    => $other_dtls->recommend_dt,
+
+                            "from_dt"       => $other_dtls->from_dt,
+
+                            "to_dt"         => $other_dtls->to_dt,
+
+                            "remarks"       => $other_dtls->remarks,                       
 
                             "comp_off_in"   =>  $this->session->flashdata('valid')['amount'],
 
@@ -259,6 +291,54 @@ class CompApproves extends MX_Controller {
                 );
                 
                 $this->Leave->f_edit('td_comp_apply', $data_array, $where);
+
+                /////
+
+                $select = array(
+                    "trans_dt", "trans_cd", "emp_code",
+                    "from_dt", "to_dt", "amount", "rejected_by",
+                    "rejected_dt", "rejection_remarks"
+                );
+
+                $where = array(
+                        "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+                        "emp_code"      =>  $this->session->flashdata('valid')['emp_code']
+                );
+
+                $reject_dtls = $this->Leave->f_get_particulars('td_comp_apply', $select, $where, 1);
+
+                //
+                unset($data_array);
+                unset($where);
+
+                $data_array = array(
+
+                    "trans_dt"          =>  $reject_dtls->trans_dt,
+
+                    "trans_cd"          =>  $reject_dtls->trans_cd,
+
+                    "emp_code"          =>  $reject_dtls->emp_code, 
+
+                    "leave_type"        =>  'C',  
+
+                    "from_dt"           =>  $reject_dtls->from_dt,
+
+                    "to_dt"             =>  $reject_dtls->to_dt,
+
+                    "amount"            =>  $reject_dtls->amount,
+
+                    "rejection_dt"      =>  $reject_dtls->rejected_dt,
+
+                    "rejection_remarks" =>  $reject_dtls->rejection_remarks,
+
+                    "rejected_by"        =>  $reject_dtls->rejected_by,
+
+                );
+
+                $this->Leave->f_insert("td_reject_trans", $data_array);
+
+
+
 
                 //Delete Dates
                 unset($where);

@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function used to apply EL/SL of half leave                 *
+ ***************************************************************/
+
 class Halfs extends MX_Controller {
 
 	public function __construct(){

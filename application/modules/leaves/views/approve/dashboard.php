@@ -33,7 +33,8 @@
                                     <th>Application Date</th>
                                     <th>Employee Name</th>
                                     <th>HOD Remarks</th>
-                                    <th>Department</th>                                    
+                                    <th>Department</th> 
+                                    <th>Recomend By</th>                                   
                                     <th>Action</th>
 
                                 </tr>
@@ -58,6 +59,7 @@
                                             <td><?php echo $e_dtls->emp_name; ?> </td>
                                             <td><?php echo $e_dtls->recommend_remarks; ?></td>
                                             <td><?php echo $e_dtls->dept_name; ?></td>
+                                            <td><?php echo $e_dtls->recommend_by; ?></td>
                                             <td>
                                             
                                                 <a href="javascript:void(0)"

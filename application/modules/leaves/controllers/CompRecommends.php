@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function HOD recommending/rejecting Comp off application   *
+ *  to HR.Here application means employee informing Mgmt. that *
+ *  he/she has worked on holidays                              *
+ ***************************************************************/
+
 class CompRecommends extends MX_Controller {
 
 	public function __construct(){
@@ -162,6 +168,50 @@ class CompRecommends extends MX_Controller {
                 );
                 
                 $this->Leave->f_edit('td_comp_apply', $data_array, $where);
+
+                /////
+                $select = array(
+                    "trans_dt", "trans_cd", "emp_code",
+                    "from_dt", "to_dt", "amount", "rejected_by",
+                    "rejected_dt", "rejection_remarks"
+                );
+
+                $where = array(
+                        "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+                        "emp_code"      =>  $this->session->flashdata('valid')['emp_code']
+                );
+
+                $reject_dtls = $this->Leave->f_get_particulars('td_comp_apply', $select, $where, 1);
+
+                //
+                unset($data_array);
+                unset($where);
+
+                $data_array = array(
+
+                    "trans_dt"          =>  $reject_dtls->trans_dt,
+
+                    "trans_cd"          =>  $reject_dtls->trans_cd,
+
+                    "emp_code"          =>  $reject_dtls->emp_code, 
+
+                    "leave_type"        =>  'C',  
+
+                    "from_dt"           =>  $reject_dtls->from_dt,
+
+                    "to_dt"             =>  $reject_dtls->to_dt,
+
+                    "amount"            =>  $reject_dtls->amount,
+
+                    "rejection_dt"      =>  $reject_dtls->rejected_dt,
+
+                    "rejection_remarks" =>  $reject_dtls->rejection_remarks,
+
+                    "rejected_by"        =>  $reject_dtls->rejected_by,
+
+                );
+
+                $this->Leave->f_insert("td_reject_trans", $data_array);
 
                 //Delete Dates
                 unset($where);

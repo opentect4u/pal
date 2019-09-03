@@ -1,6 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function apply for all types of Full leaves                *
+ *                                                             *
+ *                                                             *
+ ***************************************************************/
+
 class Leaves extends MX_Controller {
 
 	public function __construct(){

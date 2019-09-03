@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/***************************************************************
+ *  Function to Approve/reject all types of                    *
+ *  Half & Full leave application by HR                        *
+ ***************************************************************/
+
 class Approves extends MX_Controller {
 
 	public function __construct(){
@@ -65,7 +70,7 @@ class Approves extends MX_Controller {
 
             "t.trans_cd", "t.trans_dt", "m.emp_name",
 
-            "t.recommend_remarks", "d.dept_name"
+            "t.recommend_remarks","t.recommend_by" ,"d.dept_name"
 
         );
 
@@ -154,6 +159,19 @@ class Approves extends MX_Controller {
 
                         $leave_balance = $this->Leave->f_get_particulars('td_leave_balance', $select, $where, 1);
 
+
+                        $select1 = array(
+                            "trans_dt", "recommend_dt", "from_dt", 
+                            "to_dt","remarks","recommendation_status"
+                        );
+
+                        $where1   = array(
+                            "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+                            "rejection_status"=> 0
+                        );
+
+                        $other_dtls = $this->Leave->f_get_particulars('td_leaves_trans', $select1, $where1, 1);
+
                         switch ($this->session->flashdata('valid')['leave_type']) {
                                                     
                             case "E": 
@@ -165,6 +183,18 @@ class Approves extends MX_Controller {
                                         "emp_code"      =>  $this->session->flashdata('valid')['emp_code'],
                                         
                                         "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+
+                                        "status"        => $other_dtls->recommendation_status,
+
+                                        "application_dt" => $other_dtls->trans_dt,
+
+                                        "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                        "from_dt"       => $other_dtls->from_dt,
+
+                                        "to_dt"         => $other_dtls->to_dt,
+
+                                        "remarks"       => $other_dtls->remarks,                       
 
                                         "el_out"        =>  $this->session->flashdata('valid')['amount'],
 
@@ -190,6 +220,18 @@ class Approves extends MX_Controller {
                                     
                                     "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
 
+                                    "status"        => $other_dtls->recommendation_status,
+
+                                    "application_dt" => $other_dtls->trans_dt,
+
+                                    "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                    "from_dt"       => $other_dtls->from_dt,
+
+                                    "to_dt"         => $other_dtls->to_dt,
+
+                                    "remarks"       => $other_dtls->remarks,                       
+
                                     "ml_out"        =>  $this->session->flashdata('valid')['amount'],
 
                                     "ml_bal"        =>  $leave_balance->ml_bal - $this->session->flashdata('valid')['amount'],
@@ -213,6 +255,18 @@ class Approves extends MX_Controller {
                                         "emp_code"      =>  $this->session->flashdata('valid')['emp_code'],
                                         
                                         "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+
+                                        "status"        => $other_dtls->recommendation_status,
+
+                                        "application_dt" => $other_dtls->trans_dt,
+
+                                        "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                        "from_dt"       => $other_dtls->from_dt,
+
+                                        "to_dt"         => $other_dtls->to_dt,
+
+                                        "remarks"       => $other_dtls->remarks,                       
 
                                         "comp_off_out"  =>  $this->session->flashdata('valid')['amount'],
 
@@ -238,6 +292,18 @@ class Approves extends MX_Controller {
                                     
                                     "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
 
+                                    "status"        => $other_dtls->recommendation_status,
+
+                                    "application_dt" => $other_dtls->trans_dt,
+
+                                    "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                    "from_dt"       => $other_dtls->from_dt,
+
+                                    "to_dt"         => $other_dtls->to_dt,
+
+                                    "remarks"       => $other_dtls->remarks,                       
+
                                     "el_out"        =>  $this->session->flashdata('valid')['amount'],
 
                                     "ml_bal"        =>  $leave_balance->ml_bal,
@@ -262,6 +328,18 @@ class Approves extends MX_Controller {
                                     
                                     "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
 
+                                    "status"        => $other_dtls->recommendation_status,
+
+                                    "application_dt" => $other_dtls->trans_dt,
+
+                                    "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                    "from_dt"       => $other_dtls->from_dt,
+
+                                    "to_dt"         => $other_dtls->to_dt,
+
+                                    "remarks"       => $other_dtls->remarks,                       
+
                                     "ml_out"        =>  $this->session->flashdata('valid')['amount'],
 
                                     "ml_bal"        =>  $leave_balance->ml_bal - $this->session->flashdata('valid')['amount'],
@@ -285,6 +363,18 @@ class Approves extends MX_Controller {
                                         "emp_code"      =>  $this->session->flashdata('valid')['emp_code'],
                                         
                                         "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+
+                                        "status"        => $other_dtls->recommendation_status,
+
+                                        "application_dt" => $other_dtls->trans_dt,
+
+                                        "recomed_dt"    => $other_dtls->recommend_dt,
+
+                                        "from_dt"       => $other_dtls->from_dt,
+
+                                        "to_dt"         => $other_dtls->to_dt,
+
+                                        "remarks"       => $other_dtls->remarks,                       
 
                                         "comp_off_out"  =>  $this->session->flashdata('valid')['amount'],
 
@@ -457,6 +547,51 @@ class Approves extends MX_Controller {
                 );
                 
                 $this->Leave->f_edit('td_leaves_trans', $data_array, $where);
+
+                $select = array(
+                    "trans_dt", "trans_cd", "emp_code", "leave_type",
+                    "from_dt", "to_dt", "amount", "rejected_by",
+                    "rejected_dt", "rejection_remarks"
+                );
+
+                $where = array(
+                        "trans_cd"      =>  $this->session->flashdata('valid')['trans_cd'],
+                        "emp_code"      =>  $this->session->flashdata('valid')['emp_code']
+                );
+
+                $reject_dtls = $this->Leave->f_get_particulars('td_leaves_trans', $select, $where, 1);
+
+                //
+                unset($data_array);
+                unset($where);
+
+                $data_array = array(
+
+                    "trans_dt"          =>  $reject_dtls->trans_dt,
+
+                    "trans_cd"          =>  $reject_dtls->trans_cd,
+
+                    "emp_code"          =>  $reject_dtls->emp_code, 
+
+                    "leave_type"        =>  $reject_dtls->leave_type,  
+
+                    "from_dt"           =>  $reject_dtls->from_dt,
+
+                    "to_dt"             =>  $reject_dtls->to_dt,
+
+                    "amount"            =>  $reject_dtls->amount,
+
+                    "rejection_dt"      =>  $reject_dtls->rejected_dt,
+
+                    "rejection_remarks" =>  $reject_dtls->rejection_remarks,
+
+                    "rejected_by"        =>  $reject_dtls->rejected_by,
+
+                );
+
+                $this->Leave->f_insert("td_reject_trans", $data_array);
+
+
 
                 //Delete Dates
                 unset($where);
