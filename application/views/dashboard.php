@@ -18,7 +18,7 @@
                 <div class="row">
                     
                     <div class="col p-r-0 align-self-center">
-                        <h2 class="font-light m-b-0">EL</h2>
+                        <h4 class="font-light m-b-0">EL</h4>
                         <h6 class="text-muted"></h6></div>
                     
                     <div class="col text-right align-self-center">
@@ -34,7 +34,7 @@
                 <div class="row">
                     
                     <div class="col p-r-0 align-self-center">
-                        <h2 class="font-light m-b-0">SL</h2>
+                        <h4 class="font-light m-b-0">SL</h4>
                         <h6 class="text-muted"></h6></div>
                     
                     <div class="col text-right align-self-center">
@@ -50,7 +50,7 @@
                 <div class="row">
                     
                     <div class="col p-r-0 align-self-center">
-                        <h2 class="font-light m-b-0">Comp Off</h2>
+                        <h4 class="font-light m-b-0">Comp Off</h4>
                         <h6 class="text-muted"></h6></div>
                     
                     <div class="col text-right align-self-center">
@@ -66,7 +66,7 @@
                 <div class="row">
                     
                     <div class="col p-r-0 align-self-center">
-                        <h2 class="font-light m-b-0">Upcomming</h2>
+                        <h4 class="font-light m-b-0">Upcoming</h4>
                         <h6 class="text-muted"></h6></div>
                     
                     <div class="col text-right align-self-center">
@@ -86,11 +86,44 @@
                 <div class="row">
                     
                     <div class="col p-r-0 align-self-center">
-                        <h2 class="font-light m-b-0">Rejected</h2>
+                        <h4 class="font-light m-b-0">Rejected</h4>
                         <h6 class="text-muted"></h6></div>
                     
                     <div class="col text-right align-self-center">
                         <div data-label="<?php echo isset($reject->count)? $reject->count : 0 ; ?>" class="css-bar m-b-0 css-bar-danger css-bar-<?php echo isset($reject->count)? $reject->count * 5 : 0 ; ?>"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-body">
+                
+                <div class="row">
+                    
+                    <div class="col p-r-0 align-self-center">
+                        <h4 class="font-light m-b-0">Pending To HOD</h4>
+                        <h6 class="text-muted"></h6></div>
+                    
+                    <div class="col text-right align-self-center">
+                        <div data-label="<?php echo isset($hod->count)? $hod->count : 0 ; ?>" class="css-bar m-b-0 css-bar-danger css-bar-<?php echo isset($reject->count)? $reject->count * 5 : 0 ; ?>"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card card-body">
+                
+                <div class="row">
+                    
+                    <div class="col p-r-0 align-self-center">
+                        <h4 class="font-light m-b-0">Pending To HR</h4>
+                        <h6 class="text-muted"></h6></div>
+                    
+                    <div class="col text-right align-self-center">
+                        <div data-label="<?php echo isset($hr->count)? $hr->count : 0 ; ?>" class="css-bar m-b-0 css-bar-danger css-bar-<?php echo isset($reject->count)? $reject->count * 5 : 0 ; ?>"></div>
                     </div>
                 </div>
             </div>

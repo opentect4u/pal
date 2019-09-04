@@ -168,6 +168,8 @@ class Leave extends CI_Model {
     public function f_get_leave_ledger_dtls($from_dt,$to_dt){
         $sql = $this->db->query("select a.trans_cd trans_cd,a.balance_dt balance_dt,
                                         a.emp_code emp_code,b.emp_name emp_name,
+                                        a.application_dt application_dt,a.recomed_dt recomed_dt,
+                                        a.from_dt from_dt,a.to_dt to_dt,a.remarks remarks,
                                         a.ml_in ml_in,a.ml_out ml_out,a.ml_bal ml_bal,
                                         a.el_in el_in,a.el_out el_out,a.el_bal el_bal,
                                         a.comp_off_in comp_off_in,a.comp_off_out comp_off_out,a.comp_off_bal comp_off_bal
@@ -177,6 +179,45 @@ class Leave extends CI_Model {
                                 order by a.emp_code,a.balance_dt,a.trans_cd");
 
         return $sql->result();
+    }
+
+    //To fetch leave closing balance of an employee
+    public function f_get_leave_closing($emp_cd){
+
+        $sql = $this->db->query("select ml_bal,el_bal,comp_off_bal
+                                 from td_leave_balance
+                                 where emp_code = '$emp_cd'
+                                 and   balance_dt = (select max(balance_dt)
+                                                     from   td_leave_balance
+                                                     where  emp_code = '$emp_cd')
+                                 and trans_cd = (select max(trans_cd)
+                                                 from   td_leave_balance
+                                                 where  emp_code = '$emp_cd'
+                                                 and    balance_Dt =(select max(balance_dt)
+                                                                     from   td_leave_balance
+                                                                     where  emp_code = '$emp_cd'))");
+        return $sql->row();
+
+    }
+
+    public function f_get_leave_closing_dtwise($emp_cd,$from_dt){
+
+        $sql = $this->db->query("select ml_bal,el_bal,comp_off_bal
+                                 from td_leave_balance
+                                 where emp_code = '$emp_cd'
+                                 and   balance_dt = (select max(balance_dt)
+                                                     from   td_leave_balance
+                                                     where  emp_code = '$emp_cd'
+                                                     and    balance_dt <= '$from_dt')
+                                 and trans_cd = (select max(trans_cd)
+                                                 from   td_leave_balance
+                                                 where  emp_code = '$emp_cd'
+                                                 and    balance_Dt =(select max(balance_dt)
+                                                                     from   td_leave_balance
+                                                                     where  emp_code = '$emp_cd'
+                                                                     and    balance_dt <= '$from_dt'))");
+        return $sql->row();
+
     }
 
 }

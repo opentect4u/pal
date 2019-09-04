@@ -177,10 +177,10 @@ class Auths extends MX_Controller {
 
             //Leave Balance
             unset($select);
-            $select = array(
+            /*$select = array(
                 
                 "trans_cd", "ml_bal", "el_bal",
-                "comp_off_bal1", "MAX(balance_dt) balance_dt"
+                "comp_off_bal", "MAX(balance_dt) balance_dt"
             
             );
 
@@ -188,9 +188,11 @@ class Auths extends MX_Controller {
     
                 "emp_code = '".$this->session->userdata('loggedin')->user_id."' GROUP BY trans_cd, ml_bal, el_bal, comp_off_bal ORDER BY balance_dt DESC LIMIT 0,1" => NULL
 
-            );
+            );*/
 
-            $data['leave_balance'] = $this->Auth->f_get_particulars('td_leave_balance', $select, $where, 1);
+            $emp_code = $this->session->userdata('loggedin')->user_id;
+
+            $data['leave_balance'] = $this->Auth->f_get_leave_closing($emp_code);
 
             //Leave Yet to be taken
             unset($where);
@@ -211,13 +213,41 @@ class Auths extends MX_Controller {
 
             $where = array(
 
-                "emp_code"          => $this->session->userdata('loggedin')->user_id,
-
-                "rejection_status"  => 1
+                "emp_code"          => $this->session->userdata('loggedin')->user_id
 
             );
 
-            $data['reject'] = $this->Auth->f_get_particulars('td_leaves_trans', array("count(1) count"), $where, 1);
+            $data['reject'] = $this->Auth->f_get_particulars('td_reject_trans', array("count(1) count"), $where, 1);
+
+            //Pending toHOD
+            unset($where);
+
+            $where = array(
+
+                "emp_code"          => $this->session->userdata('loggedin')->user_id,
+
+                "recommendation_status" => 0
+
+            );
+
+            $data['hod'] = $this->Auth->f_get_particulars('td_leaves_trans', array("count(1) count"), $where, 1);
+
+            //Pending to HR
+            unset($where);
+
+            $where = array(
+
+                "emp_code"          => $this->session->userdata('loggedin')->user_id,
+
+                "recommendation_status" => 1,
+
+                "approval_status" => 0
+
+            );
+
+            $data['hr'] = $this->Auth->f_get_particulars('td_leaves_trans', array("count(1) count"), $where, 1);
+
+
 
             $this->load->view('header', $link);
 

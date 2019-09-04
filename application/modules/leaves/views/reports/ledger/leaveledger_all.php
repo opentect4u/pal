@@ -51,11 +51,9 @@
                                     <th>Employee Code</th>
                                     <th>Name</th>
                                     <th width="15%">Date</th>
-                                    <th>SL</th>
+                                    <th>Transaction Code</th>
                                     <th>SL Balance</th>
-                                    <th>EL</th>
                                     <th>EL Balance</th>
-                                    <th>Comp Off</th>
                                     <th>Comp Off Balance</th>
 
                                 </tr>
@@ -77,11 +75,9 @@
                                             <td><?php echo $r_dtls->emp_code; ?></td>
                                             <td><?php echo $r_dtls->emp_name; ?></td>
                                             <td><?php echo $r_dtls->balance_dt; ?></td>
-                                            <td><?php echo $r_dtls->ml_out; ?></td>
+                                            <td><?php echo $r_dtls->trans_cd; ?></td>
                                             <td><?php echo $r_dtls->ml_bal; ?></td>
-                                            <td><?php echo $r_dtls->el_out; ?></td>
                                             <td><?php echo $r_dtls->el_bal; ?></td>
-                                            <td><?php echo $r_dtls->comp_off_out; ?></td>
                                             <td><?php echo $r_dtls->comp_off_bal; ?></td>
 
                                         </tr>

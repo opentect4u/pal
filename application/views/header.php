@@ -162,14 +162,14 @@
                                     
                                     <li><a href="#" class="has-arrow"><strong>Reports</strong> </a>
                                         <ul aria-expanded="false" class="collapse">
-                                            <li><a href="<?php echo site_url('leave/ledger'); ?>">Leave Ledger</a></li>
-                                            <li><a href="<?php echo site_url('leave/details'); ?>">Leave Details</a></li>
+                                            <li><a href="<?php echo site_url('leave/ledger'); ?>">Leave Report</a></li>
+                                            <!--<li><a href="<?php echo site_url('leave/details'); ?>">Leave Details</a></li>-->
                                         <?php
                                             if($this->session->userdata('loggedin')->emp_type == 'HR'){
                                         ?>
-                                            <li><a href="<?php echo site_url('leave/ledger_all'); ?>">All Leave Ledger</a></li>
+                                            <li><a href="<?php echo site_url('leave/ledger_all'); ?>">All Leave Report</a></li>
 
-                                            <li><a href="<?php echo site_url('leave/details_all'); ?>">All Leave Details</a></li>
+                                            <!--<li><a href="<?php echo site_url('leave/details_all'); ?>">All Leave Details</a></li>-->
                                         <?php
                                             }    
                                         ?>        

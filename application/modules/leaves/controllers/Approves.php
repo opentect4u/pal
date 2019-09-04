@@ -99,10 +99,10 @@ class Approves extends MX_Controller {
     //Approve Form
     public function f_form(){
         
-        if($_SERVER['REQUEST_METHOD'] == "POST"){
+        if($_SERVER['REQUEST_METHOD'] == "POST"){                   //if 1
 
             //For Approval
-            if($this->input->post('approve_status')){
+            if($this->input->post('approve_status')){               //if 2
 
                 //For Leave Trans
                 $data_array =   array (
@@ -130,7 +130,7 @@ class Approves extends MX_Controller {
                 );
 
                 
-                if($this->Leave->f_edit('td_leaves_trans', $data_array, $where)){
+                if($this->Leave->f_edit('td_leaves_trans', $data_array, $where)){   //if 3
 
                     //Update Leave 
                     $this->Leave->f_edit('td_leave_dates', array('status' => 'A'), array('trans_cd' => $this->session->flashdata('valid')['trans_cd']));
@@ -138,13 +138,13 @@ class Approves extends MX_Controller {
                     //Checking if row present in current date
                     $trans_cd = $this->Leave->f_get_particulars('td_leave_balance', array("trans_cd"), array("emp_code" => $this->session->flashdata('valid')['emp_code'], "balance_dt" => date('Y-m-d')), 1);
 
-                    if(!isset($trans_cd) && $this->session->flashdata('valid')['leave_type'] != 'N'){
-                        
+                    //if(!isset($trans_cd) && $this->session->flashdata('valid')['leave_type'] != 'N'){       //if 4
+                            
                         //Last balance date
                         unset($data_array);
                         unset($where);
 
-                        $select =    array(
+                       /* $select =    array(
 
                             "emp_code", "ml_bal", "el_bal", "comp_off_bal",
                             "MAX(balance_dt) balance_dt"
@@ -155,9 +155,11 @@ class Approves extends MX_Controller {
         
                             "emp_code = '".$this->session->flashdata('valid')['emp_code']."' GROUP BY emp_code, ml_bal, el_bal, comp_off_bal ORDER BY balance_dt DESC LIMIT 0,1" => NULL
         
-                        );
+                        );*/
 
-                        $leave_balance = $this->Leave->f_get_particulars('td_leave_balance', $select, $where, 1);
+                        $emp_code      = $this->session->flashdata('valid')['emp_code'];
+
+                        $leave_balance = $this->Leave->f_get_leave_closing($emp_code);
 
 
                         $select1 = array(
@@ -392,8 +394,8 @@ class Approves extends MX_Controller {
                         
                         }
 
-                    }
-                    else{
+                    //}   //end if 4
+                    /*else{            //else of if 4
 
                         //Last balance date
                         unset($data_array);
@@ -501,7 +503,7 @@ class Approves extends MX_Controller {
                 
                         }
 
-                    }    
+                    } */   
 
                     
                 }

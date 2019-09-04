@@ -148,13 +148,13 @@ class CompApproves extends MX_Controller {
                     //Checking if row present in current date
                     $trans_cd = $this->Leave->f_get_particulars('td_leave_balance', array("trans_cd"), array("emp_code" => $this->session->flashdata('valid')['emp_code'], "balance_dt" => date('Y-m-d')), 1);
                     //echo($trans_cd); die;
-                    if(!isset($trans_cd)){
+                    //if(!isset($trans_cd)){
                         
                         //Last balance date
                         unset($data_array);
                         unset($where);
 
-                        $select =    array(
+                        /*$select =    array(
 
                             "emp_code", "ml_bal", "el_bal", "comp_off_bal",
                             "MAX(balance_dt) balance_dt"
@@ -165,9 +165,11 @@ class CompApproves extends MX_Controller {
         
                             "emp_code = '".$this->session->flashdata('valid')['emp_code']."' GROUP BY emp_code, ml_bal, el_bal, comp_off_bal ORDER BY balance_dt DESC LIMIT 0,1" => NULL
         
-                        );
+                        );*/
 
-                        $leave_balance = $this->Leave->f_get_particulars('td_leave_balance', $select, $where, 1);
+                        $emp_code      = $this->session->flashdata('valid')['emp_code'];
+
+                        $leave_balance = $this->Leave->f_get_leave_closing($emp_code);
 
 
                         $select1 = array(
@@ -215,8 +217,8 @@ class CompApproves extends MX_Controller {
                     
                         $this->Leave->f_insert("td_leave_balance", $data_array);
 
-                    }
-                    else{
+                    //}
+                    /*else{
                         
                         //Last balance date
                         unset($data_array);
@@ -246,7 +248,7 @@ class CompApproves extends MX_Controller {
                     
                         $this->Leave->f_edit("td_leave_balance", $data_array, array("trans_cd" => $trans_cd->trans_cd));
 
-                    }
+                    }*/
                     
                 }
 

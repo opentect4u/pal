@@ -411,8 +411,11 @@ class Leaves extends MX_Controller {
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
+            $from_dt = $this->input->post('from_date');
+            $to_date = $this->input->post('to_date');
+
             //Opening Balances
-            $select =    array(
+            /*$select =    array(
 
                 "emp_code","trans_cd", "ml_bal", "el_bal", 
                 "comp_off_bal", "MAX(balance_dt) balance_dt"
@@ -425,9 +428,11 @@ class Leaves extends MX_Controller {
 
                 "balance_dt < '".$this->input->post('from_date')."' GROUP BY trans_cd, ml_bal, el_bal, comp_off_bal ORDER BY balance_dt DESC, trans_cd DESC LIMIT 0,1" => NULL
                 
-            );
+            );*/
 
-            $data['open_bal']  = $this->Leave->f_get_particulars("td_leave_balance", $select, $where, 1);
+            $emp_code = $this->input->post('emp_code')? $this->input->post('emp_code') : $this->session->userdata('loggedin')->user_id;
+
+            $data['open_bal']  = $this->Leave->f_get_leave_closing_dtwise($emp_code,$from_dt);
 
             //Remaining Balances
             unset($select);
@@ -437,7 +442,10 @@ class Leaves extends MX_Controller {
                 "trans_cd", "ml_in", "el_in", "comp_off_in",
                 "ml_out", "el_out", "comp_off_out",
                 "ml_bal", "el_bal", "comp_off_bal",
-                "balance_dt"
+                "balance_dt","application_dt","from_dt","to_dt",
+                "remarks","ml_in","el_in","comp_off_in",
+                "ml_out","el_out","comp_off_out",
+                "ml_bal","el_bal","comp_off_bal"
 
             );
 
@@ -445,18 +453,41 @@ class Leaves extends MX_Controller {
 
                 "emp_code = '".($this->input->post('emp_code')? $this->input->post('emp_code') : $this->session->userdata('loggedin')->user_id)."'" => NULL,
 
-                "balance_dt BETWEEN '".$this->input->post('from_date')."' AND '".$this->input->post('to_date')."' ORDER BY balance_dt" => NULL
+                "balance_dt BETWEEN '".$this->input->post('from_date')."' AND '".$this->input->post('to_date')."' ORDER BY balance_dt,trans_cd" => NULL
                 
             );
 
             $data['remaining_bal']  = $this->Leave->f_get_particulars("td_leave_balance", $select, $where, 0);
 
+            
+            //Rejection Details
+
+            unset($select);
+            unset($where);
+            $select =    array(
+
+                "trans_cd", "trans_dt", "emp_code", "leave_type",
+                "from_dt", "to_dt", "amount",
+                "rejection_dt", "rejection_remarks", "rejected_by"
+            );
+
+            $where  =   array(
+
+                "emp_code = '".($this->input->post('emp_code')? $this->input->post('emp_code') : $this->session->userdata('loggedin')->user_id)."'" => NULL,
+
+                "rejection_dt BETWEEN '".$this->input->post('from_date')."' AND '".$this->input->post('to_date')."' ORDER BY rejection_dt,trans_cd" => NULL
+                
+            );
+
+            $data['reject_dtls']  = $this->Leave->f_get_particulars("td_reject_trans", $select, $where, 0);
+
             $emp_code = $this->input->post('emp_code')? $this->input->post('emp_code') : $this->session->userdata('loggedin')->user_id;
+
+
 
             $data['emp_code'] = $emp_code;
 
-            $from_dt = $this->input->post('from_date');
-            $to_date = $this->input->post('to_date');
+            
 
             $data['date'] = array($from_dt,$to_date);
 
@@ -614,8 +645,11 @@ class Leaves extends MX_Controller {
         $object = new PHPExcel();
         $object->setActiveSheetIndex(0);
 
-        $table_column = array("Employee Code","Name","Date","SL","SL Balance",
-                              "EL","EL Balance","Comp.Off","Comp.Off Balance");
+        $table_column = array("Employee Code","Name","Date","Transaction Code",
+                              "Application Date","Recomend By HOD","Leave From",
+                              "Leave To","Remarks","SL In","SL Out","SL Balance",  
+                              "EL In","EL Out","EL Balance",
+                              "Comp.Off In","Comp.Off Out","Comp.Off Balance");
 
         $column = 0;
 
@@ -633,20 +667,23 @@ class Leaves extends MX_Controller {
             $object->getActiveSheet()->SetCellValueByColumnAndRow(0,$rowCount,$row->emp_code);
             $object->getActiveSheet()->SetCellValueByColumnAndRow(1,$rowCount,$row->emp_name);
             $object->getActiveSheet()->SetCellValueByColumnAndRow(2,$rowCount,$row->balance_dt);
-
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->ml_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->ml_bal);
-
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->el_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(6,$rowCount,$row->el_bal);
-
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(7,$rowCount,$row->comp_off_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(8,$rowCount,$row->comp_off_bal);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->trans_cd);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->application_dt);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->recomed_dt);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(6,$rowCount,$row->from_dt);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(7,$rowCount,$row->to_dt);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(8,$rowCount,$row->remarks);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(9,$rowCount,$row->ml_in);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(10,$rowCount,$row->ml_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(11,$rowCount,$row->ml_bal);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(12,$rowCount,$row->el_in);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(13,$rowCount,$row->el_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(14,$rowCount,$row->el_bal);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(15,$rowCount,$row->comp_off_in);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(16,$rowCount,$row->comp_off_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(17,$rowCount,$row->comp_off_bal);
             
-            
-
-
-
+        
             $rowCount++;
         }
 

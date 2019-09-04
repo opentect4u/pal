@@ -59,5 +59,23 @@ class Auth extends CI_Model {
 
     }
 
+    //To fetch leave closing balance of an employee
+    public function f_get_leave_closing($emp_cd){
 
+        $sql = $this->db->query("select ml_bal,el_bal,comp_off_bal
+                                 from td_leave_balance
+                                 where emp_code = '$emp_cd'
+                                 and   balance_dt = (select max(balance_dt)
+                                                     from   td_leave_balance
+                                                     where  emp_code = '$emp_cd')
+                                 and trans_cd = (select max(trans_cd)
+                                                 from   td_leave_balance
+                                                 where  emp_code = '$emp_cd'
+                                                 and    balance_Dt =(select max(balance_dt)
+                                                                     from   td_leave_balance
+                                                                     where  emp_code = '$emp_cd'))");
+        return $sql->row();
+
+
+    }
 }
