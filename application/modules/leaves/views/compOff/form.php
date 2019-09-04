@@ -60,13 +60,25 @@ else{
 
                             <div class="row">
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
 
                                     <div class="form-group">
-                                        
-                                        <h6 class="card-subtitle">after selecting comp Off period please click the apply button.</h6>
+                                        <label class="control-label">From Date</label>
+                                        <!-- <h6 class="card-subtitle">after selecting comp Off period please click the apply button.</h6> -->
                                             
-                                        <input type='text' class="form-control buttonClass" name="period" value="<?php echo date('d/m/Y', strtotime($compOff_dtls->from_dt)).' - '.date('d/m/Y', strtotime($compOff_dtls->to_dt)); ?>" />
+                                        <!-- <input type='text' class="form-control buttonClass" name="period" value="<?php //echo date('d/m/Y', strtotime($compOff_dtls->from_dt)).' - '.date('d/m/Y', strtotime($compOff_dtls->to_dt)); ?>" /> -->
+                                        <input type="date" name= "from_dt" class= "form-control" value= "<?php echo $compOff_dtls->from_dt; ?>" />
+                                        
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <label class="control-label">To Date</label>
+                                        <input type="date" name= "to_dt" class= "form-control" value= "<?php echo $compOff_dtls->to_dt ?>" />
 
                                     </div>
 
