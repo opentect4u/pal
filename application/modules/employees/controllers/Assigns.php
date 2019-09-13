@@ -140,7 +140,7 @@ class Assigns extends MX_Controller {
 
         $where  = array(
             "e.department = d.sl_no" => NULL,
-            "e.emp_code != '".$this->session->userdata('loggedin')->user_id."' ORDER BY d.dept_name" => NULL
+            "e.emp_code != '".$this->session->userdata('loggedin')->user_id."' ORDER BY e.emp_name" => NULL
 
         );
 

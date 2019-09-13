@@ -88,7 +88,30 @@ class Employees extends MX_Controller {
         
         if($_SERVER['REQUEST_METHOD'] == "POST"){
 
-            //Employee Details
+            //Checking if Employee Code Exist
+            $emp_no = $this->Employee->f_emp_code($this->input->post('emp_code'));
+
+            if($emp_no->emp_nos > 0){
+
+                $message    =   array( 
+                    
+                'message'   => 'Employee Code Already Exists',
+                
+                'status'    => 'Failed To Save'
+                
+            );
+
+            $this->session->set_flashdata('msg', $message); 
+
+
+
+                $this->session->set_flashdata('msg', $message);
+
+                redirect('employees');
+            }
+
+
+            //Adding New Employee Details 
             $data_array = array (
 
                 "emp_code"         =>  $this->input->post('emp_code'),

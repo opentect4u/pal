@@ -72,4 +72,13 @@ class Employee extends CI_Model {
 
     }
 
+    //Checking whether employee code exist in table
+    public function f_emp_code($emp_code){
+        $this->db->select("count(*) as emp_nos");
+        $this->db->where("emp_code",$emp_code);
+        $count  = $this->db->get("md_employee");
+
+        return $count->row();
+    }
+
 }

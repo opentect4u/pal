@@ -12,7 +12,7 @@
             </ol>
         </div>
         <div class="col-md-4 col-12 align-self-center">
-            <div class="alert alert-<?php echo $this->session->flashdata('msg')['status']; ?>"></div>
+            <div style="color:red" class="alert alert-<?php echo $this->session->flashdata('msg')['status']; ?>"></div>
         </div>
     </div>
     
@@ -63,7 +63,7 @@
                                             <td><?php echo $e_dtls->emp_code; ?></td>
                                             <td class="row">
                                                 
-                                                <img class="avatar" src="<?php echo $e_dtls->img_path; ?>" alt="Profile Image" height="40" width="50">
+                                                <!--<img class="avatar" src="<?php echo $e_dtls->img_path; ?>" alt="Profile Image" height="40" width="50">-->
                                                 <div style="margin-left: 10px;">
     
                                                     <?php echo $e_dtls->emp_name; ?>

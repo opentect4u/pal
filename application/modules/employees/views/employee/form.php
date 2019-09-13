@@ -21,6 +21,7 @@
                     <input type="<?php echo $type; ?>" 
                         class="form-control" 
                         name="emp_code"
+                        id = "emp_code"
                         placeholder="Employee Code"
                         value="<?php echo $emp->emp_code; ?>"
                         required
@@ -261,6 +262,7 @@
             }
 
         });
+
 
     });
 

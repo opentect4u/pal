@@ -44,6 +44,8 @@ class Closings extends MX_Controller {
     }
 
     public function index(){
+
+        //$data['emp'] = $this->leave->f_get_particulars("md_employee","emp_code");
         
         //Employee List
         $data['closings']    =   $this->Leave->f_get_closings();
