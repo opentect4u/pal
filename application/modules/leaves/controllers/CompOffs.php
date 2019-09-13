@@ -105,10 +105,17 @@ class CompOffs extends MX_Controller {
               }
             
             //CompOff Period  
-            $period         =   explode('-', str_replace(' ', '', $this->input->post('period')));              
+            //$period         =   explode('-', str_replace(' ', '', $this->input->post('period')));              
+            
+            $from_dt        =       $_POST['from_dt'];
+
+            $to_dt          =       $_POST['to_dt'];
+
             
             //Difference between to dates
-            $diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
+            //$diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
+
+            $diff_period   =    date_diff($from_dt,$to_dt);
 
             //For CompOff Trans Table
             $data_array     =   array (
@@ -123,9 +130,13 @@ class CompOffs extends MX_Controller {
 
                 "reason"           =>  $this->input->post('reason'),
                 
-                "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
+                // "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
 
-                "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
+                // "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
+
+                "from_dt"          =>   $from_dt,
+
+                "to_dt"            =>   $to_dt,
 
                 "remarks"          =>  $this->input->post('remarks'),
 
@@ -143,8 +154,8 @@ class CompOffs extends MX_Controller {
             unset($data_array);
             for($i = 0; $i <= $diff_period; $i++){
 
-                $date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
-                
+                //$date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
+                $date = $from_dt;
                 
                 $data_array[]     =   array(
 
@@ -216,19 +227,27 @@ class CompOffs extends MX_Controller {
         if($_SERVER['REQUEST_METHOD'] == "POST"){
 
             //CompOff Period  
-            $period         =   explode('-', str_replace(' ', '', $this->input->post('period')));              
+            //$period         =   explode('-', str_replace(' ', '', $this->input->post('period')));              
             
+            $from_dt        =       $_POST['from_dt'];
+            $to_dt          =       $_POST['to_dt'];
+
             //Difference between to dates
-            $diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
+            //$diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
+
+            $diff_period    =   date_diff($from_dt,$to_dt);
 
             //For CompOff Trans Table
             $data_array     =   array (
 
                 "reason"           =>  $this->input->post('reason'),
                 
-                "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
+                // "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
 
-                "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
+                // "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
+                "from_dt"          =>   $from_dt,
+
+                "to_dt"            =>   $to_dt,
 
                 "remarks"          =>  $this->input->post('remarks'),
 
@@ -270,8 +289,8 @@ class CompOffs extends MX_Controller {
 
             for($i = 0; $i <= $diff_period; $i++) {
 
-                $date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
-                
+                //$date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
+                $date = $from_dt;
                 
                 $data_array[]     =   array(
 
