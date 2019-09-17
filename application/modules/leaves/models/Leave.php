@@ -129,8 +129,7 @@ class Leave extends CI_Model {
 
     } 
 
-
-    public function f_get_closings(){
+    /*public function f_get_closings(){
         
         return $this->db->query("SELECT `t1`.*, ifnull(`t2`.`ml_bal`, 0) `sl`, ifnull(`t2`.`el_bal`, 0) `el`, ifnull(`t2`.`comp_off_bal`, 0) `compoff` FROM
 
@@ -145,7 +144,7 @@ class Leave extends CI_Model {
                 WHERE t1.emp_code = t2.emp_code
                 AND t1.balance_dt = t2.balance_dt")->result();
                 
-    }
+    }*/
 
     //Fetching Leave Transaction Details For All Employee With in a given period 
     public function f_get_leave_trans_dtls($from_dt,$to_dt){
@@ -218,6 +217,50 @@ class Leave extends CI_Model {
                                                                      and    balance_dt <= '$from_dt'))");
         return $sql->row();
 
+    }
+
+    public function f_get_emp_lv_bal($from_date){
+
+        $sql = "select emp_code,max(balance_dt)balance_dt
+                from td_leave_balance 
+                where balance_dt   <='$from_date' 
+                and emp_code in(select emp_code from md_employee where emp_status = 'A') 
+                group by emp_code
+                order by emp_code";
+
+        $query = $this->db->query($sql);
+
+        foreach ($query->result() as $row){
+            $data[] = $row;
+        }
+
+        for ($i=0;$i<sizeof($data);$i++){
+
+            $empCd = $data[$i]->emp_code;
+            $balDt = $data[$i]->balance_dt;
+           
+            $sql1 = "select a.emp_code emp_code,a.emp_name emp_name,
+                            a.department department,b.dept_name dept_name,
+                            c.ml_bal sl,c.el_bal el,c.comp_off_bal comp
+                     from md_employee a, md_departments b, td_leave_balance c
+                     where a.department = b.sl_no
+                     and   a.emp_code   = c.emp_code
+                     and   a.emp_code   = '$empCd'
+                     and   c.balance_dt = '$balDt'
+                     and   c.trans_cd   =  (select max(trans_cd)
+                                            from   td_leave_balance
+                                            where  emp_code = '$empCd'
+                                            and    balance_Dt =(select max(balance_dt)
+                                                                from   td_leave_balance
+                                                                where  emp_code = '$empCd'
+                                                                and    balance_dt <= '$balDt'))";
+
+            $result = $this->db->query($sql1);
+
+            $count[] = $result->row();
+        }
+
+        return $count;    
     }
 
 }

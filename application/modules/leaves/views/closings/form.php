@@ -47,7 +47,6 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 
                                     </div>
 
-
                                 </div>
 
                             </div>
@@ -97,7 +96,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
                             <tbody> 
 
                                 <?php 
-                                
+ 
                                 if($closings) {
 
                                         $i = 1;
@@ -109,13 +108,15 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
                                         
                                             <td><?php echo $i++; ?></td>
                                             <td class="emp_code"><?php echo $list->emp_code; ?></td>
+
                                             <td><?php echo $list->emp_name; ?></td>
-                                            <td><?php echo $list->department; ?></td>
+                                            <td><?php echo $list->dept_name; ?></td>
                                             <td style="text-align: right;"> <input type="hidden" class="form-control sl_cls" value="<?php echo $list->sl; ?>" /> <span class="sl"><?php echo $list->sl; ?></span></td>
                                             <td style="text-align: right;"> <input type="hidden" class="form-control el_cls" value="<?php echo $list->el; ?>" /> <span class="el"><?php echo $list->el; ?></span></td>
-                                            <td style="text-align: right;"> <input type="hidden" class="form-control compoff_cls" value="<?php echo $list->compoff; ?>" /> <span class="compoff"><?php echo $list->compoff; ?></span></td>
+                                            <td style="text-align: right;"> <input type="hidden" class="form-control compoff_cls" value="<?php echo $list->comp; ?>" /> <span class="compoff"><?php echo $list->comp; ?></span></td>
 
                                         </tr>
+
 
                                 <?php
                                         
