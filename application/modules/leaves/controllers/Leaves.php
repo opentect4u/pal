@@ -21,6 +21,7 @@ class Leaves extends MX_Controller {
         }
 
         $this->load->model('Leave');
+
         
         $link['title']  = 'Leave Management';
 
@@ -178,6 +179,37 @@ class Leaves extends MX_Controller {
             
             $this->Leave->f_insert_multiple('td_leave_dates', $data_array);
 
+///////////////////////
+
+            $empCd  =   $this->session->userdata('loggedin')->user_id;
+
+            $select1 =   array("emp_name");
+
+            $where1  =   array("emp_code" => $empCd);
+
+            $empName =   $this->Leave->f_get_particulars("md_employee",$select1,$where1,1);
+
+            $eName = $empName->emp_name;
+
+            $lvType =   $this->input->post('leave_type');
+
+            $select =   array("manage_by");
+
+            $where  =   array("managed_emp" => $empCd);
+
+            $mgr    =   $this->Leave->f_get_particulars("md_manager",$select,$where,1);
+
+            //foreach ($mgr as $row) {
+
+                $mgrEmp  = $mgr->manage_by;   
+
+                $email   = $this->Leave->f_get_email($mgrEmp);
+
+                $emailId = $email->email;
+
+                $this->f_mail($emailId,$eName,$lvType);
+           // }
+//////////////////////////////////////////////////////////////////
             //Setting Messages
             $message    =   array( 
                     
@@ -1197,5 +1229,39 @@ class Leaves extends MX_Controller {
         echo ($currQuarter * 2) - $data->ml_out;
 
         exit();
+    }
+
+    /*On applying email*/
+
+    public function f_mail($toMailid,$empName,$lvType){
+
+        $this->load->library('email');
+
+        //$msg = "Hi ".$empName." has applied for ".$lvType." leave.Please log in for details.";
+
+
+        $from_email = 'opentech4u@gmail.com';
+
+        $this->email->from('opentech4u@gmail.com','Leave'); 
+
+        $this->email->to($toMailid);
+
+        $this->email->subject('Leave Application');
+
+        $this->email->message("dfse");
+
+        $this->email->send();
+
+        /*if($this->email->send()){
+             echo $toMailid."<br>";
+             echo "send";
+             echo "<br>";
+             echo $empName."<br>";
+             echo $lvType;
+             die;
+        }else{
+            echo "failed";
+            die;
+        }*/
     }
 }

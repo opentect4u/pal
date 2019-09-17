@@ -263,4 +263,15 @@ class Leave extends CI_Model {
         return $count;    
     }
 
+    public function f_get_email($emp_code){
+
+        $this->db->select('email');
+
+        $this->db->where('emp_code',$emp_code);
+
+        $email = $this->db->get('md_employee');
+
+        return $email->row();
+    }
+
 }
