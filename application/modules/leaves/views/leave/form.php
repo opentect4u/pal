@@ -424,6 +424,43 @@ else{
         // });
         
 
+        // Can't apply for past --
+        $('#from_date').change(function(){
+
+            var leaveType       =       $('#leave_type').val();
+            var fromDt = $(this).val();
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            if(month < 10)
+                month = '0'+month;
+            if(day < 10)
+                day = '0'+day;
+        
+            var today = year+'-'+month+'-'+day;
+            
+            if(leaveType != 'M')
+            {
+                if(today > fromDt)
+                {
+                    $('#from_date').css('border-color', 'red');
+                    $('#to_date').css('border-color', 'red');
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                    $('#submit').prop('disabled', true);
+                    return false;
+                }
+                else
+                {
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                    $('#submit').prop('disabled', false);
+                    return true;
+                }
+            }
+
+        })
+
+
         // For checking Whether the employee had taken more than 2 ML in a month or not / only 2 ML can be applied
         $('#to_date').change(function(){
 
@@ -588,7 +625,7 @@ else{
                                 $('#to_date').css('border-color', 'red');
                                 $('.alert').html('Sorry! You are crossing assigned monthly EL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
                                 $('#submit').prop('disabled', true);
-                                console.log("No leaveTaken / range is crossing '1.5' limit");
+                                //console.log("No leaveTaken / range is crossing '1.5' limit");
                                 
                                 return false;
                             }
@@ -626,8 +663,69 @@ else{
 
             })
 
+
+            // For checking -- "quaterly 2 SL can be taken max"
+            if(leaveType == 'M')
+            {
+
+                $.get('<?php echo site_url("leave/check_quaterly_slTaken"); ?>',{fromDt: fromDt, toDt : toDt})
+                .done(function(data){
+
+                    var tot_sl = JSON.parse(data).tot_sl;
+                    //console.log(tot_sl);
+                    if(parseFloat(tot_sl+leaveRange) > 2)
+                    {
+                        $('#leave_type').css('border-color', 'red');
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                        $('#submit').prop('disabled', true);
+                        return false;
+                    }   
+                    else
+                    {
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                        $('#submit').prop('disabled', false);
+                        return true;
+                    }
+
+                })
+
+            }
+
+
+            // Except SL other leave can't be applied for previous day --
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            if(month < 10)
+                month = '0'+month;
+            if(day < 10)
+                day = '0'+day;
+        
+            var today = year+'-'+month+'-'+day;
+            
+            if(leaveType != 'M')
+            {
+                if(today > fromDt)
+                {
+                    $('#from_date').css('border-color', 'red');
+                    $('#to_date').css('border-color', 'red');
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                    $('#submit').prop('disabled', true);
+                    return false;
+                }
+                else
+                {
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                    $('#submit').prop('disabled', false);
+                    return true;
+                }
+            }
+
         })
 
+
+        
 
         $('input[type=date]').change(function(){
 

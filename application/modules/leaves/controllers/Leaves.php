@@ -1062,6 +1062,75 @@ class Leaves extends MX_Controller {
     }
 
 
+    // Shubhankar 
+    public function f_check_quaterly_slTaken()
+    {
+
+        $fromDt     =       $this->input->get('fromDt');
+        $toDt       =       $this->input->get('toDt');
+        $user_id    =   $this->session->userdata('loggedin')->user_id;
+
+        $month = date('F', strtotime($fromDt));
+        $month_from = $this->f_get_quater_no($month);
+        $month_to = $month_from + 2;
+
+        $sl_taken = $this->Leave->f_check_quaterly_slTaken($month_from, $month_to, $user_id);
+
+        echo json_encode($sl_taken);
+        exit();
+
+    }
+
+    // for getting quater no--
+    public function f_get_quater_no($month)
+    {
+
+        switch($month)
+        {
+            case 'January':
+                $month_from = 01;
+                break;
+            case 'February':
+                $month_from = 01;
+                break;  
+            case 'March':
+                $month_from = 01;
+                break;
+            case 'April':
+                $month_from = 04;
+                break;
+            case 'May':
+                $month_from = 04;
+                break;
+            case 'June':
+                $month_from = 04;
+                break;
+            case 'July':
+                $month_from = 07;
+                break;  
+            case 'August':
+                $month_from = 07;
+                break;
+            case 'September':
+                $month_from = 07;
+                break;
+            case 'October':
+                $month_from = 10;
+                break;
+            case 'November':
+                $month_from = 10;
+                break;
+            case 'December':
+                $month_from = 10;
+                break;                
+            
+        }
+
+        return $month_from;
+
+    }
+
+
     //for overlapping dates
     public function f_overlapp(){
 
@@ -1143,6 +1212,7 @@ class Leaves extends MX_Controller {
         echo $data->DateDiff;
 
         exit();
+
     }
 
     //Ml Limit for employees

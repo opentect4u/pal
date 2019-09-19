@@ -150,6 +150,18 @@ class Leave extends CI_Model {
 
     }
 
+    // SHubhankar 
+    public function f_check_quaterly_slTaken($month_from, $month_to, $user_id)
+    {
+
+        $sql = $this->db->query(" SELECT SUM(amount) AS tot_sl FROM td_leaves_trans WHERE month(from_dt) BETWEEN '$month_from' AND '$month_to'
+                                AND YEAR(from_dt) = YEAR(CURDATE()) AND emp_code = '$user_id' AND leave_type = 'M' OR leave_type = 'HM' ");
+        
+        return $sql->row();
+
+    }
+
+
     /*public function f_get_closings(){
         
         return $this->db->query("SELECT `t1`.*, ifnull(`t2`.`ml_bal`, 0) `sl`, ifnull(`t2`.`el_bal`, 0) `el`, ifnull(`t2`.`comp_off_bal`, 0) `compoff` FROM

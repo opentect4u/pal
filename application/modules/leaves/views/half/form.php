@@ -212,7 +212,9 @@ else{
 }
 
 ?>
-<script>
+
+
+<!-- <script>
 
     var event = 0,
         elLimit=0.00,
@@ -514,7 +516,7 @@ else{
 
     });
 
-</script>
+</script> -->
 
     
 
@@ -523,10 +525,11 @@ else{
 
     $(document).ready(function(){
 
+        $('.alert').hide();
         $('#from_dt').on('change', function(){
 
             var from_dt = $(this).val();
-            //console.log(from_dt);
+            var leaveType = $('#leave_type').val();
 
             $.get('<?php echo site_url("leave/half/check_halfLeave_appliedDt"); ?>',{from_dt: from_dt})
             .done(function(data){
@@ -555,6 +558,102 @@ else{
                 }
 
             })
+
+
+            // For checking -- "quaterly 2 SL can be taken max"
+            if(leaveType == 'HM')
+            {
+                var leaveRange = 0.5;
+
+                $.get('<?php echo site_url("leave/check_quaterly_slTaken"); ?>',{fromDt: from_dt, toDt : from_dt})
+                .done(function(data){
+
+                    var tot_sl = JSON.parse(data).tot_sl;
+                    console.log(tot_sl);
+                    if(parseFloat(tot_sl+leaveRange) > 2)
+                    {
+                        $('#leave_type').css('border-color', 'red');
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                        $('#submit').prop('disabled', true);
+                        return false;
+                    }   
+                    else
+                    {
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                        $('#submit').prop('disabled', false);
+                        return true;
+                    }
+
+                })
+
+            }
+
+
+            // Except SL other leave can't be applied for previous day --
+            var currentTime = new Date();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+            if(month < 10)
+                month = '0'+month;
+            if(day < 10)
+                day = '0'+day;
+        
+            var today = year+'-'+month+'-'+day;
+            
+            if(leaveType != 'HM')
+            {
+                if(today > from_dt)
+                {
+                    $('#from_dt').css('border-color', 'red');
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                    $('#submit').prop('disabled', true);
+                    return false;
+                }
+                else
+                {
+                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                    $('#submit').prop('disabled', false);
+                    return true;
+                }
+            }
+
+
+        })
+
+
+        $('#leave_type').on('change', function(){
+
+            var leaveType = $(this).val();
+            var from_dt = $('#from_dt').val();
+
+            // For checking -- "quaterly 2 SL can be taken max"
+            if(leaveType == 'HM')
+            {
+                var leaveRange = 0.5;
+
+                $.get('<?php echo site_url("leave/check_quaterly_slTaken"); ?>',{fromDt: from_dt, toDt : from_dt})
+                .done(function(data){
+
+                    var tot_sl = JSON.parse(data).tot_sl;
+                    console.log(tot_sl);
+                    if(parseFloat(tot_sl+leaveRange) > 2)
+                    {
+                        $('#leave_type').css('border-color', 'red');
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                        $('#submit').prop('disabled', true);
+                        return false;
+                    }   
+                    else
+                    {
+                        $('.alert').html('Sorry! You are crossing quaterly SL limit. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                        $('#submit').prop('disabled', false);
+                        return true;
+                    }
+
+                })
+
+            }
 
         })
 
