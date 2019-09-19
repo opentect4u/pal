@@ -1047,6 +1047,21 @@ class Leaves extends MX_Controller {
 
     }
 
+
+    // * Shubhankar * //
+    public function f_check_leave_appliedDt() // For JS
+    {
+
+        $fromDt     =   $this->input->get('fromDt');
+        $toDt       =   $this->input->get('toDt');
+        $user_id    =   $this->session->userdata('loggedin')->user_id;
+
+        $checkVal   =   $this->Leave->f_check_leave_appliedDt($fromDt, $toDt, $user_id);
+        echo json_encode($checkVal);
+        exit();
+    }
+
+
     //for overlapping dates
     public function f_overlapp(){
 

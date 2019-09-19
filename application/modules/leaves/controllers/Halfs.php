@@ -696,4 +696,22 @@ class Halfs extends MX_Controller {
 
         exit();
     }
+
+
+    /* Shubhankar */
+    public function f_check_halfLeave_appliedDt()// FOR JS
+    {
+
+        $from_dt    =   $this->input->get('from_dt');
+        $user_id    =   $this->session->userdata('loggedin')->user_id;
+
+        $checkVal   =   $this->Leave->f_check_halfLeave_appliedDt($from_dt ,$user_id);
+
+        echo json_encode($checkVal);
+        exit();
+
+    }
+
+
+
 }

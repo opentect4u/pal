@@ -105,7 +105,7 @@ else{
                                     
                                         <label class="control-label">Date</label>
                                         
-                                        <input type='date' class="form-control halfdate" name="from_dt" value="<?php echo $half_dtls->from_dt; ?>" />
+                                        <input type='date' class="form-control halfdate" id= "from_dt" name="from_dt" value="<?php echo $half_dtls->from_dt; ?>" />
 
                                     </div>
 
@@ -517,3 +517,47 @@ else{
 </script>
 
     
+
+<!-- Checking whather there is any leave apply for the same date -->
+<script>
+
+    $(document).ready(function(){
+
+        $('#from_dt').on('change', function(){
+
+            var from_dt = $(this).val();
+            //console.log(from_dt);
+
+            $.get('<?php echo site_url("leave/half/check_halfLeave_appliedDt"); ?>',{from_dt: from_dt})
+            .done(function(data){
+
+                //console.log(JSON.parse(data));
+                if(JSON.parse(data) == null)
+                {
+                    return true;
+                }
+                else
+                {
+                    var overlapDtNo = JSON.parse(data).num_rows;
+                    if(overlapDtNo > 0)
+                    {
+                        $('#from_dt').css('border-color', 'red');
+                        $('.alert').html('Sorry! You had applied leave previously for this date. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                        $('#submit').prop('disabled', true);
+                        return false;
+                    }
+                    else
+                    {
+                        $('.alert').html('Sorry! You had applied leave previously for this date. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                        $('#submit').prop('disabled', false);
+                        return true;
+                    }
+                }
+
+            })
+
+        })
+
+    })
+
+</script>

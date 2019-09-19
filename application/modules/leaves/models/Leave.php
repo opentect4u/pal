@@ -129,6 +129,27 @@ class Leave extends CI_Model {
 
     } 
 
+    /* Shubhankar */
+    public function f_check_leave_appliedDt($fromDt, $toDt, $user_id)
+    {
+
+        $sql = $this->db->query(" SELECT COUNT(*) AS num_rows FROM td_leave_dates WHERE emp_code = '$user_id' AND
+                                leave_dt BETWEEN '$fromDt' AND '$toDt' ");
+        
+        return $sql->row();
+
+    }
+
+    // Shubhankar 
+    public function f_check_halfLeave_appliedDt($from_dt ,$user_id)
+    {
+
+        $sql = $this->db->query(" SELECT COUNT(*) AS num_rows FROM td_leave_dates WHERE emp_code = '$user_id' AND
+                                leave_dt = '$from_dt' ");
+        return $sql->row();
+
+    }
+
     /*public function f_get_closings(){
         
         return $this->db->query("SELECT `t1`.*, ifnull(`t2`.`ml_bal`, 0) `sl`, ifnull(`t2`.`el_bal`, 0) `el`, ifnull(`t2`.`comp_off_bal`, 0) `compoff` FROM
