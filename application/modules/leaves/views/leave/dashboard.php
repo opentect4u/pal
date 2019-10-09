@@ -55,7 +55,7 @@
 
                                             <td><?php echo $e_dtls->trans_cd; ?></td>
 
-                                            <td><?php if(strtotime($e_dtls->trans_dt) == strtotime(date('Y-m-d'))) $status=false; echo date('d-m-Y', strtotime($e_dtls->trans_dt)); ?></td>
+                                            <td><?php if(strtotime($e_dtls->trans_dt) == strtotime(date('Y-m-d'))) $status=true; echo date('d-m-Y', strtotime($e_dtls->trans_dt)); ?></td>
                                             
                                             <td><?php switch ($e_dtls->leave_type) {
                                                 

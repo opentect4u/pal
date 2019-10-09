@@ -520,7 +520,7 @@ else{
 
     
 
-<!-- Checking whather there is any leave apply for the same date -->
+
 <script>
 
     $(document).ready(function(){
@@ -530,6 +530,8 @@ else{
 
             var from_dt = $(this).val();
             var leaveType = $('#leave_type').val();
+
+            //Checking whether there is any leave applied for the same date
 
             $.get('<?php echo site_url("leave/half/check_halfLeave_appliedDt"); ?>',{from_dt: from_dt})
             .done(function(data){
@@ -545,8 +547,8 @@ else{
                     if(overlapDtNo > 0)
                     {
                         $('#from_dt').css('border-color', 'red');
-                        $('.alert').html('Sorry! You had applied leave previously for this date. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
-                        $('#submit').prop('disabled', true);
+                        alert("You have already applied leave on this date.");
+                        window.location.href = "<?php echo site_url('leave/half'); ?>";
                         return false;
                     }
                     else
@@ -589,7 +591,7 @@ else{
             }
 
 
-            // Except SL other leave can't be applied for previous day --
+           //Cannot apply leave on previous dates other than Medical
             var currentTime = new Date();
             var month = currentTime.getMonth() + 1;
             var day = currentTime.getDate();
@@ -606,8 +608,10 @@ else{
                 if(today > from_dt)
                 {
                     $('#from_dt').css('border-color', 'red');
-                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
-                    $('#submit').prop('disabled', true);
+                    /*$('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                    $('#submit').prop('disabled', true);*/
+                    alert("Please select current or any future date");
+                    window.location.href = "<?php echo site_url('leave/half'); ?>";
                     return false;
                 }
                 else

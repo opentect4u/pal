@@ -440,14 +440,18 @@ else{
         
             var today = year+'-'+month+'-'+day;
             
+            //Cannot apply leave on previous dates other than Medical
+
             if(leaveType != 'M')
             {
                 if(today > fromDt)
                 {
                     $('#from_date').css('border-color', 'red');
                     $('#to_date').css('border-color', 'red');
-                    $('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
-                    $('#submit').prop('disabled', true);
+                    /*$('.alert').html('Sorry! Can not apply leave for past. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
+                    $('#submit').prop('disabled', true);*/
+                    alert("Please select current or any future date");
+                    window.location.href = "<?php echo site_url('leave'); ?>";
                     return false;
                 }
                 else
@@ -461,15 +465,22 @@ else{
         })
 
 
-        // For checking Whether the employee had taken more than 2 ML in a month or not / only 2 ML can be applied
+        
         $('#to_date').change(function(){
 
             var leaveType       =       $('#leave_type').val();
             var fromDt          =       $('#from_date').val();
             var toDt            =       $('#to_date').val();
             var leaveRange      =       new ValidDates(fromDt, toDt).dateRange();
-            //let overlappDt  = fetch(from_date, to_date, 'overlapp');
-            //console.log(data);
+            
+            //To date must not be less than from date
+            if(fromDt > toDt){
+                alert("To date must be greater than equal to from date");
+                window.location.href = "<?php echo site_url('leave'); ?>";
+                return false;
+            }
+
+            // For checking Whether the employee had taken more than 2 ML in a month or not / only 2 ML can be applied
             
             switch(leaveType)
             {
@@ -641,7 +652,7 @@ else{
             }
 
 
-            // Checking whather previously any leave applied in this date range or not -- 
+            // Checking whether previously any leave applied in this date range or not.
             $.get('<?php echo site_url("leave/check_leave_appliedDt"); ?>',{fromDt: fromDt, toDt : toDt})
             .done(function(data){
 
@@ -650,14 +661,17 @@ else{
                 {
                     $('#from_date').css('border-color', 'red');
                     $('#to_date').css('border-color', 'red');
-                    $('.alert').html('Sorry! You had applied leave previously for this date range. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();
-                    $('#submit').prop('disabled', true);
+                    /*$('.alert').html('You have already applied leave for this date range. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').show();*/
+                    //$('#submit').attr('disabled', true);
+                    //$("#submit").attr("disabled", true);
+                    alert("You have already applied leave for this date range.");
+                    window.location.href = "<?php echo site_url('leave'); ?>";
                     return false;
                 }
                 else
                 {
-                    $('.alert').html('Sorry! You had applied leave previously for this date range. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
-                    $('#submit').prop('disabled', false);
+                    $('.alert').html('You have already applied leave for this date range. <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>').hide();
+                    $('#submit').attr('disabled', false);
                     return true;
                 }
 

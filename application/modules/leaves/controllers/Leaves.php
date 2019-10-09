@@ -116,6 +116,8 @@ class Leaves extends MX_Controller {
                 //Difference between to dates
                 $diff_period    =   date_diff(date_create($this->input->post('from_date')),date_create($this->input->post('to_date')));
 
+                $days =  $diff_period->format("%a");
+
                 // $diff = abs(strtotime($startDt) - strtotime($endDt));
                 // $diff_period = floor($diff)/(60*60*24);
                 //echo $diff_period; die;
@@ -161,7 +163,7 @@ class Leaves extends MX_Controller {
 
             //For Leave Date Table
             unset($data_array);
-            for($i = 0; $i <= $diff_period; $i++){
+            for($i = 0; $i <= $days; $i++){
 
                 $date = strtotime("+".$i." day", strtotime($this->input->post('from_date')));
                 

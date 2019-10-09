@@ -67,7 +67,7 @@ else{
                                         <!-- <h6 class="card-subtitle">after selecting comp Off period please click the apply button.</h6> -->
                                             
                                         <!-- <input type='text' class="form-control buttonClass" name="period" value="<?php //echo date('d/m/Y', strtotime($compOff_dtls->from_dt)).' - '.date('d/m/Y', strtotime($compOff_dtls->to_dt)); ?>" /> -->
-                                        <input type="date" name= "from_dt" class= "form-control" value= "<?php echo $compOff_dtls->from_dt; ?>" />
+                                        <input type="date" name= "from_dt" id="from_dt" class= "form-control" value= "<?php echo $compOff_dtls->from_dt; ?>" />
                                         
                                     </div>
 
@@ -78,7 +78,7 @@ else{
                                     <div class="form-group">
 
                                         <label class="control-label">To Date</label>
-                                        <input type="date" name= "to_dt" class= "form-control" value= "<?php echo $compOff_dtls->to_dt ?>" />
+                                        <input type="date" name= "to_dt" id="to_dt" class= "form-control" value= "<?php echo $compOff_dtls->to_dt ?>" />
 
                                     </div>
 
@@ -210,6 +210,26 @@ else{
         });
 
     });
+</script>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('#to_dt').on('change',function(){
+
+            var frm_dt = $('#from_dt').val();
+            var to_dt  = $('#to_dt').val();
+
+            if(frm_dt > to_dt){
+
+                alert("To date must be greater than equal to from date");
+                window.location.href = "<?php echo site_url('leave/compoff'); ?>";
+                return false;
+            }
+
+        });
+    }); 
 
 </script>
 

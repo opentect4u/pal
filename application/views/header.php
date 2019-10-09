@@ -75,10 +75,47 @@
                             <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                             
                         </ul>
+
+                        <ul class="navbar-nav ml-auto">
+                            <?php
+                                if($this->session->userdata('loggedin')->emp_type == 'H'){
+                            ?>
+
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/recommend');?>">
+                                        <i class="fa fa-fw fa-bell"></i>
+                                    </a>
+                               </li>
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
+                                        <i class="fa fa-fw fa-envelope"></i>
+                                    </a>
+                               </li>
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
+                                        <i class="fa fa-fw fa-arrow-down"></i>
+                                    </a>
+                               </li>
+                               <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
+                                        <i class="fa fa-fw fa-paper-plane"></i>
+                                    </a>
+                               </li>
+                            <?php
+                                }
+                            ?>
+                            
+                        </ul>
                         
                         <ul class="navbar-nav my-lg-0">
                             
                             <li class="nav-item dropdown">
+
+                                <!--<a class="nav-link dropdown-toggle mr-lg-2" href="vfs">
+                                    <i class="fa fa-fw fa-bell"></i>HOD
+                                </a>-->
+                                <!--<a><i class="fa fa-fw fa-bell"></i>USER</a>
+                                <a><i class="fa fa-fw fa-bell"></i>HR</a>-->
                                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<?php echo base_url($user_dtls->img_path); ?>" height="30" width="30" alt="user" class="profile-pic" /></a>
                                 <div class="dropdown-menu animated flipInY dropdown-menu-right">
                                     <ul class="dropdown-user">
