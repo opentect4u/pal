@@ -78,4 +78,63 @@ class Auth extends CI_Model {
 
 
     }
+
+    //To get no. of pending leave under a HOD to be recomended by him
+    public function f_get_hod_recom($emp_cd){
+
+        $sql = $this->db->query("select count(*) lv_count 
+                                 from td_leaves_trans 
+                                 where recommendation_status = 0
+                                 and   emp_code in (select managed_emp
+                                                    from   md_manager
+                                                    where  manage_by = '$emp_cd')");
+        return $sql->row();
+    }
+
+    //To get no. of pending leave under a HR to be approved by him
+    public function f_get_hr_recom(){
+
+        $sql = $this->db->query("select count(*) lv_count 
+                                 from td_leaves_trans 
+                                 where recommendation_status = 1
+                                 and   rejection_status =   0
+                                 and   approval_status = 0");
+        return $sql->row();
+    }
+
+    //To get no. of pending compoff under a HOD to be recomended by him
+    public function f_get_hod_comp($emp_cd){
+
+        $sql = $this->db->query("select count(*) lv_comp_count 
+                                 from td_comp_apply 
+                                 where recommendation_status = 0
+                                 and   emp_code in (select managed_emp
+                                                    from   md_manager
+                                                    where  manage_by = '$emp_cd')");
+        return $sql->row();
+    }
+
+    //To get no. of pending compoff under a HR to be approved by him
+    public function f_get_hr_comp(){
+
+        $sql = $this->db->query("select count(*) lv_comp_count 
+                                 from td_comp_apply 
+                                 where recommendation_status = 1
+                                 and   rejection_status      = 0
+                                 and   approval_status       = 0");
+        return $sql->row();
+    }
+
+    //Approved Leave yet to be taken
+    public function f_pendig_leave($userId,$date){
+
+        $sql = $this->db->query("select count(*)pending_lv 
+                                 from td_leaves_trans
+                                 where approval_status  = 1
+                                 and   rejection_status = 0
+                                 and   emp_code         = '$userId'
+                                 and   from_dt          > '$date'");
+
+        return $sql->row(); 
+    }
 }

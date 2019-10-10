@@ -175,27 +175,38 @@ class Auths extends MX_Controller {
 
             $link['user_dtls']   = $this->Auth->f_get_particulars("md_employee", $select, array("emp_code" => $this->session->userdata('loggedin')->user_id), 1);
 
+            //Notification for HOD and HR
+            $userType   =   $this->session->userdata('loggedin')->emp_type;
+
+            $userId     =   $this->session->userdata('loggedin')->user_id;
+
+            if($userType == 'H'){  
+
+                $link['totLv']      =   $this->Auth->f_get_hod_recom($userId);
+
+                $link['totComp']    =   $this->Auth->f_get_hod_comp($userId);                
+
+            }elseif($userType == 'HR'){
+
+                $link['totLv']      =   $this->Auth->f_get_hr_recom();
+
+                $link['totComp']    =   $this->Auth->f_get_hr_comp();
+            }
+
+            
+
             //Leave Balance
             unset($select);
-            /*$select = array(
-                
-                "trans_cd", "ml_bal", "el_bal",
-                "comp_off_bal", "MAX(balance_dt) balance_dt"
-            
-            );
 
-            $where  =   array(
-    
-                "emp_code = '".$this->session->userdata('loggedin')->user_id."' GROUP BY trans_cd, ml_bal, el_bal, comp_off_bal ORDER BY balance_dt DESC LIMIT 0,1" => NULL
-
-            );*/
 
             $emp_code = $this->session->userdata('loggedin')->user_id;
 
             $data['leave_balance'] = $this->Auth->f_get_leave_closing($emp_code);
 
+            $date = date('Y-m-d');
+
             //Leave Yet to be taken
-            unset($where);
+            /*unset($where);
 
             $where = array(
 
@@ -204,9 +215,9 @@ class Auths extends MX_Controller {
                 "leave_dt > '".date('Y-m-d')."'" => NULL,
 
                 "status"            => 'A'
-            );
+            );*/
 
-            $data['pending'] = $this->Auth->f_get_particulars('td_leave_dates', array("count(1) count"), $where, 1);
+            $data['pending'] = $this->Auth->f_pendig_leave($emp_code,$date);
 
             //Rejected Leave
             unset($where);

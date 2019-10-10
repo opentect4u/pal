@@ -78,27 +78,52 @@
 
                         <ul class="navbar-nav ml-auto">
                             <?php
-                                if($this->session->userdata('loggedin')->emp_type == 'H'){
+                                if($this->session->userdata('loggedin')->emp_type == 'H'||$this->session->userdata('loggedin')->emp_type == 'HR'){
                             ?>
 
                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/recommend');?>">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php 
+                                    if($this->session->userdata('loggedin')->emp_type == 'H'){
+                                        echo site_url('leave/recommend');
+                                    }else{
+                                        echo site_url('leave/approve');
+                                    }    
+                                                                                        ?>" 
+                                        title='Leave to recommend/approve'
+                                    >
                                         <i class="fa fa-fw fa-bell"></i>
+                                            <?php
+                                               if($totLv->lv_count == 0){
+                                                    echo ' ';
+                                                }elseif($totLv->lv_count > 0 ){
+                                                    echo '<span class="indicator badge badge-pill">'.$totLv->lv_count.'</span>';
+                                                }else{
+                                                    echo ' ';  
+                                                }
+                                            ?>
                                     </a>
                                </li>
                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
+                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php 
+                                    if($this->session->userdata('loggedin')->emp_type == 'H'){
+                                        echo site_url('leave/comprecommend');
+                                    }else{
+                                        echo site_url('leave/compapprove');    
+                                    }                                                 
+                                                                                      ?>"
+                                    title='Compoff to recommend/approve'
+                                    
+                                    >
                                         <i class="fa fa-fw fa-envelope"></i>
-                                    </a>
-                               </li>
-                               <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
-                                        <i class="fa fa-fw fa-arrow-down"></i>
-                                    </a>
-                               </li>
-                               <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle mr-lg-2" href="<?php echo site_url('leave/comprecommend');?>">
-                                        <i class="fa fa-fw fa-paper-plane"></i>
+                                            <?php
+                                                if($totComp->lv_comp_count == 0){
+                                                    echo ' ';
+                                                }elseif($totComp->lv_comp_count > 0 ){
+                                                    echo '<span class="indicator badge badge-pill">'.$totComp->lv_comp_count.'</span>';  
+                                                }else{
+                                                    echo ' ';
+                                                }
+                                            ?>
                                     </a>
                                </li>
                             <?php

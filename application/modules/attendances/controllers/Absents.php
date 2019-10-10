@@ -16,6 +16,8 @@ class Absents extends MX_Controller {
 
         $this->load->model('Attendance');
 
+        $this->load->model('Auth');
+
         $link['title']  = 'Absent Details';
 
         $link['link']   =   [
@@ -29,6 +31,25 @@ class Absents extends MX_Controller {
         $select = array("emp_code", "emp_name", "img_path");
 
         $link['user_dtls']   = $this->Attendance->f_get_particulars("md_employee", $select, array("emp_code" => $this->session->userdata('loggedin')->user_id), 1);
+
+
+        //Notification for HOD and HR
+        $userType   =   $this->session->userdata('loggedin')->emp_type;
+
+        $userId     =   $this->session->userdata('loggedin')->user_id;
+
+        if($userType == 'H'){  
+
+            $link['totLv']      =   $this->Auth->f_get_hod_recom($userId);
+
+            $link['totComp']    =   $this->Auth->f_get_hod_comp($userId);                
+
+        }elseif($userType == 'HR'){
+
+            $link['totLv']      =   $this->Auth->f_get_hr_recom();
+
+            $link['totComp']    =   $this->Auth->f_get_hr_comp();
+        }
 
 
         $this->load->view('header', $link);
