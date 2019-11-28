@@ -87,7 +87,7 @@ class Auths extends MX_Controller {
                     
 
                     //Pending Comp Off
-                    $this->pending_compoffs();
+                    //$this->pending_compoffs();
 
                     $this->session->set_userdata('tm_audit_sl_no', $sl_no->sl_no);
 
@@ -318,7 +318,7 @@ class Auths extends MX_Controller {
 
     /****************************** Pending Comp Off *********************************/
 
-    public function pending_compoffs(){
+    /*public function pending_compoffs(){
 
         $where = array(
 
@@ -328,7 +328,11 @@ class Auths extends MX_Controller {
             "comp_off_out > 0" => NULL
         );
 
+       
         $data   =  $this->Auth->f_get_particulars("td_leave_balance", NULL, $where, 0);
+
+       
+        
 
         if(!$data){
             
@@ -338,11 +342,13 @@ class Auths extends MX_Controller {
                 "balance_dt" => $data->balance_dt,
                 "emp_code"   => $this->session->userdata('loggedin')->user_id
             );
+
+             
     
-            $this->Auth->f_edit("td_leave_balance", array("comp_off_bal" => 0), $where);
+            $this->Auth->f_edit("td_leave_balance1", array("comp_off_bal" => 0), $where);
 
         }
         
-    }
+    }*/
 
 }

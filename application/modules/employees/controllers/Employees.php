@@ -123,8 +123,6 @@ class Employees extends MX_Controller {
 
             $this->session->set_flashdata('msg', $message); 
 
-
-
                 $this->session->set_flashdata('msg', $message);
 
                 redirect('employees');
