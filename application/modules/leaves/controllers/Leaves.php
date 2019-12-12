@@ -171,7 +171,7 @@ class Leaves extends MX_Controller {
                 
                 "recommend_dt"     => NULL,
 
-                "recommend_remarks"=> $recommendation_remarks,
+                "recommend_remarks"=> NULL,
 
                 "created_by"       =>  $this->session->userdata('loggedin')->user_name,
     
