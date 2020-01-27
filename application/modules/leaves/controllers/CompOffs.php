@@ -131,11 +131,16 @@ class CompOffs extends MX_Controller {
 
             $to_dt          =       $_POST['to_dt'];
 
-            
-            //Difference between to dates
-            //$diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
 
-            $diff_period   =    date_diff($from_dt,$to_dt);
+            $datediff = strtotime($to_dt) - strtotime($from_dt);
+
+            $diff_period = round($datediff / (60 * 60 * 24));
+            
+          
+
+            //$diff_period   =    date_diff($from_dt1,$to_dt1);
+
+
 
             //For CompOff Trans Table
             $data_array     =   array (
@@ -149,10 +154,6 @@ class CompOffs extends MX_Controller {
                 "department"       =>  $this->session->userdata('loggedin')->department,
 
                 "reason"           =>  $this->input->post('reason'),
-                
-                // "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
-
-                // "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
 
                 "from_dt"          =>   $from_dt,
 
@@ -172,10 +173,16 @@ class CompOffs extends MX_Controller {
 
             //For CompOff Date Table
             unset($data_array);
+            
+            
+            $date = $from_dt;
+            
             for($i = 0; $i <= $diff_period; $i++){
 
                 //$date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
-                $date = $from_dt;
+                
+                //$date = date('Y-m-d', strtotime($date. ' + 1 days'));
+                
                 
                 $data_array[]     =   array(
 
@@ -183,10 +190,14 @@ class CompOffs extends MX_Controller {
 
                     "emp_code"  =>  $this->session->userdata('loggedin')->user_id,
                     
-                    "comp_dt"  =>  date("Y-m-d", $date)
+                    "comp_dt"  =>  date("Y-m-d", strtotime($date))
                 );
+                
+                $date = date('Y-m-d', strtotime($date. ' + 1 days'));
 
             }
+            
+           
             
             $this->Leave->f_insert_multiple('td_comp_dates', $data_array);
 
@@ -255,16 +266,17 @@ class CompOffs extends MX_Controller {
             //Difference between to dates
             //$diff_period    =   round((strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[1])))) - strtotime(date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))))) / (60 * 60 * 24));
 
-            $diff_period    =   date_diff($from_dt,$to_dt);
+            $datediff = strtotime($to_dt) - strtotime($from_dt);
+
+            $diff_period = round($datediff / (60 * 60 * 24));
+            
+            //$diff_period    =   date_diff($from_dt,$to_dt);
 
             //For CompOff Trans Table
             $data_array     =   array (
 
                 "reason"           =>  $this->input->post('reason'),
                 
-                // "from_dt"          =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[0]))),
-
-                // "to_dt"            =>  date('Y-m-d', strtotime(str_replace('/', '-', $period[1]))),
                 "from_dt"          =>   $from_dt,
 
                 "to_dt"            =>   $to_dt,
@@ -306,11 +318,13 @@ class CompOffs extends MX_Controller {
 
             //For CompOff Date Table
             unset($data_array);
+            
+            $date = $from_dt;
 
             for($i = 0; $i <= $diff_period; $i++) {
 
                 //$date = strtotime("+".$i." day", strtotime(str_replace('/', '-', $period[0])));
-                $date = $from_dt;
+                
                 
                 $data_array[]     =   array(
 
@@ -318,9 +332,11 @@ class CompOffs extends MX_Controller {
 
                     "emp_code"  =>  $this->session->userdata('loggedin')->user_id,
                     
-                    "comp_dt"   =>  date("Y-m-d", $date)
+                    "comp_dt"   =>  date("Y-m-d", strtotime($date))
 
                 );
+                
+                $date = date('Y-m-d', strtotime($date. ' + 1 days'));
 
             }
 
