@@ -114,7 +114,7 @@
                             required
                         >
 
-                                <option>Department</option>
+                                <option value="">Department</option>
 
                         <?php
 
@@ -157,6 +157,7 @@
                         id="join_dt"
                         placeholder="Date of joining"
                         value="<?php echo ($emp->joining_date)? date('d-m-Y', strtotime($emp->joining_date)) : $emp->joining_date; ?>"
+                        required
                         />
                     
                 </div>

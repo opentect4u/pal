@@ -154,9 +154,13 @@ class Leave extends CI_Model {
     public function f_check_quaterly_slTaken($month_from, $month_to, $user_id)
     {
 
-        $sql = $this->db->query(" SELECT SUM(amount) AS tot_sl FROM td_leaves_trans WHERE month(from_dt) BETWEEN '$month_from' AND '$month_to'
-                                AND YEAR(from_dt) = YEAR(CURDATE()) AND emp_code = '$user_id' AND leave_type = 'M' OR leave_type = 'HM' ");
+        $sql = $this->db->query(" SELECT ifnull(SUM(amount),0) AS tot_sl FROM td_leaves_trans WHERE month(from_dt) BETWEEN '$month_from' AND '$month_to'
+                                AND YEAR(from_dt) = YEAR(CURDATE()) AND emp_code = '$user_id' AND leave_type in('M', 'HM')");
         
+        
+        //$qry = $this->db->last_query();
+
+        //echo $qry;die;
         return $sql->row();
 
     }
