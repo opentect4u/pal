@@ -934,4 +934,22 @@ else{
 
 </script>
 
+
+<script>
+    $(document).ready(function(){
+
+        $('#form').on('submit',function(){
+
+            var to_dt = $('#to_dt').val();
+
+            if(typeof(to_dt)==="undefined"){
+
+                alert('Invalid to date');
+                window.location.href = "<?php echo site_url('leave'); ?>";
+                return false;
+            }
+        })
+    });
+</script>
+
     

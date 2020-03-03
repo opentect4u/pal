@@ -63,7 +63,7 @@
                                             <td><?php echo $e_dtls->emp_code; ?></td>
                                             <td class="row">
                                                 
-                                                <img class="avatar" src="<?php echo base_url($e_dtls->img_path); ?>" alt="Profile Image" height="40" width="50">
+                                                <!--<img class="avatar" src="<?php //echo base_url($e_dtls->img_path); ?>" alt="" height="40" width="50">-->
                                                 <div style="margin-left: 10px;">
     
                                                     <?php echo $e_dtls->emp_name; ?>

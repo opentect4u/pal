@@ -31,7 +31,7 @@
 						
 						<div class="form-group m-t-40">
 							<div class="col-xs-12">
-								<input class="form-control" type="text" name="user_id" required="" placeholder="Username" />
+								<input class="form-control" type="text" name="user_id" id="user_id" required="" placeholder="Username" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -74,12 +74,32 @@
 
 				<?php } ?>
 
+				$("#user_id").on('change',function(){
+
+					var userId = $("#user_id").val();
+
+					
+					$.get("<?php echo site_url('Auths/chkAsn'); ?>",{user:userId},function(data){
+
+						if(data==0){
+							$("#user_id").val("");
+							alert('HOD not yet assigned.Cannot Log In')
+							return false;
+						}else{
+							return true;
+						}
+
+					});
+				});
+
 			});
 			
 		</script>
 	</body>
 
 </html>
+
+
 
 
 

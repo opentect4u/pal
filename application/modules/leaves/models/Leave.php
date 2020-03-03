@@ -201,7 +201,7 @@ class Leave extends CI_Model {
     }
 
     //Fetching Leave Transaction Ledger For All Employee With in a given period 
-    public function f_get_leave_ledger_dtls($from_dt,$to_dt){
+    /*public function f_get_leave_ledger_dtls($from_dt,$to_dt){
         $sql = $this->db->query("select a.trans_cd trans_cd,a.balance_dt balance_dt,
                                         a.emp_code emp_code,b.emp_name emp_name,
                                         a.application_dt application_dt,a.recomed_dt recomed_dt,
@@ -214,8 +214,55 @@ class Leave extends CI_Model {
                                 and   a.balance_dt between '$from_dt' and '$to_dt' 
                                 order by a.emp_code,a.balance_dt,a.trans_cd");
 
+                               
+
         return $sql->result();
-    }
+
+        
+    }*/
+
+    public function f_get_leave_ledger_dtls($from_dt,$to_dt){
+        $sql = $this->db->query("select emp_code,
+                                max(balance_dt)balance_dt
+                            from td_leave_balance
+                            where balance_dt <='$to_dt' 
+                            and emp_code    in(select emp_code from md_employee where emp_status = 'A')
+                            group by emp_code
+                            order by emp_code"); 
+
+		foreach ($sql->result() as $row) {
+            $data[] = $row;
+        }
+
+        for ($i=0; $i < sizeof($data); $i++) { 
+            $sql = $this->db->query("select max(trans_cd)trans_cd
+                                     from   td_leave_balance
+                                     where  emp_code   =" ."'".$data[$i]->emp_code."'".
+                                     " and   balance_dt ="."'".$data[$i]->balance_dt."'");
+        
+
+            foreach ($sql->result() as $row) {
+            $data1[] = $row;
+            }
+        }
+
+
+        for ($i=0; $i < sizeof($data1); $i++) { 
+            $sql = $this->db->query("select a.balance_dt balance_dt,
+                                            a.emp_code emp_code,b.emp_name emp_name,
+                                            a.ml_bal ml_bal,
+                                            a.el_bal el_bal,
+                                            a.comp_off_bal comp_off_bal
+                                    from td_leave_balance a,md_employee b
+                                    where a.emp_code = b.emp_code
+                                    and   a.emp_code  =" ."'".$data[$i]->emp_code."'".
+                                    " and   a.balance_dt ="."'".$data[$i]->balance_dt."'".
+                                    " and   a.trans_cd   = ".$data1[$i]->trans_cd );
+    		$count[] = $sql->row();
+        }
+        
+		return $count;   
+	}
 
     //To fetch leave closing balance of an employee
     public function f_get_leave_closing($emp_cd){

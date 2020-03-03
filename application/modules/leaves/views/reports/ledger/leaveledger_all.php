@@ -51,7 +51,6 @@
                                     <th>Employee Code</th>
                                     <th>Name</th>
                                     <th width="15%">Date</th>
-                                    <th>Transaction Code</th>
                                     <th>SL Balance</th>
                                     <th>EL Balance</th>
                                     <th>Comp Off Balance</th>
@@ -69,13 +68,14 @@
                                     
                                     foreach($leave_ledg_all as $r_dtls) {
 
+                                        if(!empty($r_dtls->emp_code)){
+
                                 ?>
 
                                         <tr>
                                             <td><?php echo $r_dtls->emp_code; ?></td>
                                             <td><?php echo $r_dtls->emp_name; ?></td>
                                             <td><?php echo $r_dtls->balance_dt; ?></td>
-                                            <td><?php echo $r_dtls->trans_cd; ?></td>
                                             <td><?php echo $r_dtls->ml_bal; ?></td>
                                             <td><?php echo $r_dtls->el_bal; ?></td>
                                             <td><?php echo $r_dtls->comp_off_bal; ?></td>
@@ -83,6 +83,7 @@
                                         </tr>
 
                                 <?php
+                                    }
                                         
                                         }
 
@@ -112,13 +113,13 @@
     <div class="card-footer">
         <button class="btn print-btn tValHide" type="button" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Print" style="width: 95px;" id="" onclick="printReport();"><i class="fa fa-print fa-lg" aria-hidden="true"></i></button>
     
-            <a data-toggle="tooltip" data-original-title="Save As Excel" class="btn btn-lg btn-success" href="<?php echo site_url('leaves/leaveldg_xlsx');?>">
+            <!--<a data-toggle="tooltip" data-original-title="Save As Excel" class="btn btn-lg btn-success" href="<?php //echo site_url('leaves/leaveldg_xlsx');?>">
             
             <span class="fa-stack fa-lg">
                         <i class="fa fa-file-excel-o fa-stack-1x">Excel</i>
             </span>
                 
-            </a>
+            </a>-->
     </div> 
 
 

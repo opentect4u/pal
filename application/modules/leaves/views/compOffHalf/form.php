@@ -64,9 +64,9 @@ else{
 
                                     <div class="form-group">
                                         
-                                        <h6 class="card-subtitle">date</h6>
+                                        <h6 class="card-subtitle">Date</h6>
                                             
-                                        <input type='date' class="form-control halfdate" name="from_dt" value="<?php echo $compOffHalf_dtls->from_dt; ?>" />
+                                        <input type='date' class="form-control halfdate" id="from_dt" name="from_dt" value="<?php echo $compOffHalf_dtls->from_dt; ?>" />
 
                                     </div>
 
@@ -191,6 +191,18 @@ else{
                 $('#submit').attr('type', 'submit');
             }
 
+        });
+
+        $('#form').on('submit',function(){
+
+        var frm_dt = $('#from_dt').val();
+
+            if(frm_dt.length == 0){
+
+                alert('Invalid Date');
+                window.location.href = "<?php echo site_url('leave/compoffhalf'); ?>";
+                return false;
+            }
         });
 
     });

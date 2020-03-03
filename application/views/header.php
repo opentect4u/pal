@@ -189,8 +189,7 @@
                                     
                                     <li><a href="<?php echo site_url('leave'); ?>">Full Leave Application Form</a></li>
                                     <li><a href="<?php echo site_url('leave/half'); ?>">Half Leave Application Form</a></li>
-                                    <li><a href="<?php echo site_url('leave/compoff'); ?>">Full Comp Off Apply Form</a></li>
-                                    <li><a href="<?php echo site_url('leave/compoffhalf'); ?>">Half Comp Off Apply Form</a></li>
+                                    
 
                                     <?php 
                                         
@@ -199,7 +198,6 @@
                                             //For HOD Only
                                     ?>
                                             <li><a href="<?php echo site_url('leave/recommend'); ?>">Leave Recommend</a></li>
-                                            <li><a href="<?php echo site_url('leave/comprecommend'); ?>">Recommend Comp Off</a></li>
 
                                     <?php
                                         }
@@ -208,9 +206,9 @@
                                             //For HR Only
                                     ?>      
                                             <li><a href="<?php echo site_url('leave/recommend'); ?>">Leave Recommend</a></li>
-                                            <li><a href="<?php echo site_url('leave/comprecommend'); ?>">Recommend Comp Off</a></li>
+                                            
                                             <li><a href="<?php echo site_url('leave/approve'); ?>">Leave Approve</a></li>
-                                            <li><a href="<?php echo site_url('leave/compapprove'); ?>">Comp Off Approve</a></li>
+                                            
                                             <li><a href="<?php echo site_url('leave/reject'); ?>">Reject Approved Leave</a></li>
                                             <li><a href="<?php echo site_url('leaves/closings'); ?>">Closing Balances</a></li>
 
@@ -233,11 +231,40 @@
 
                                             <!--<li><a href="<?php echo site_url('leave/details_all'); ?>">All Leave Details</a></li>-->
                                         <?php
-                                            }    
+                                            }     
                                         ?>        
                                         </ul>
                                     </li>
 
+                                </ul>
+                            </li>
+
+                            <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-calendar-today"></i><span class="hide-menu">Comp Off</span></a>
+                            
+                                <ul aria-expanded="false" class="collapse">
+
+                                    <li><a href="<?php echo site_url('leave/compoff'); ?>">Full Comp Off Apply Form</a></li>
+                                    <li><a href="<?php echo site_url('leave/compoffhalf'); ?>">Half Comp Off Apply Form</a></li>
+
+                                    <?php 
+                                        
+                                        if($this->session->userdata('loggedin')->emp_type == 'H'){
+                                            
+                                            //For HOD Only
+                                    ?>
+                                        <li><a href="<?php echo site_url('leave/comprecommend'); ?>">Recommend Comp Off</a></li>
+                                    <?php
+                                        }
+
+                                        if($this->session->userdata('loggedin')->emp_type == 'HR'){
+                                    ?>
+                                        <li><a href="<?php echo site_url('leave/comprecommend'); ?>">Recommend Comp Off</a></li>
+                                        <li><a href="<?php echo site_url('leave/compapprove'); ?>">Comp Off Approve</a></li>
+                                    <?php
+                                        }
+                                    ?>
+
+                                    
                                 </ul>
                             </li>
 

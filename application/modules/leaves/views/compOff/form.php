@@ -216,6 +216,27 @@ else{
 
     $(document).ready(function(){
 
+        $('#form').on('submit',function(){
+
+            var frm_dt = $('#from_dt').val();
+            var to_dt  = $('#to_dt').val();
+
+            if(frm_dt.length == 0||to_dt.length == 0){
+
+                alert('Invalid Date');
+                window.location.href = "<?php echo site_url('leave/compoff'); ?>";
+                return false;
+            }
+
+            if(frm_dt > to_dt){
+
+            alert("To date must be greater than equal to from date");
+            window.location.href = "<?php echo site_url('leave/compoff'); ?>";
+            return false;
+            }
+            
+        });
+
         $('#to_dt').on('change',function(){
 
             var frm_dt = $('#from_dt').val();

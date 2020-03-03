@@ -137,4 +137,14 @@ class Auth extends CI_Model {
 
         return $sql->row(); 
     }
+
+    //
+    public function f_chk_asn($empno){
+
+        $sql = $this->db->query("select count(*)cnt_emp
+                                 from   md_manager
+                                 where  managed_emp = '$empno' ");
+
+        return $sql->row();
+    }
 }

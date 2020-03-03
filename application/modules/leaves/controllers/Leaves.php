@@ -661,6 +661,7 @@ class Leaves extends MX_Controller {
 
             $data['leave_ledg_all']  = $this->Leave->f_get_leave_ledger_dtls($fromDt,$toDate);
 
+
             $script['script'] = [
             
                 '/assets/plugins/footable/js/footable.all.min.js',
@@ -699,11 +700,16 @@ class Leaves extends MX_Controller {
         $object = new PHPExcel();
         $object->setActiveSheetIndex(0);
 
-        $table_column = array("Employee Code","Name","Date","Transaction Code",
+        /*$table_column = array("Employee Code","Name","Date","Transaction Code",
                               "Application Date","Recomend By HOD","Leave From",
                               "Leave To","Remarks","SL In","SL Out","SL Balance",  
                               "EL In","EL Out","EL Balance",
-                              "Comp.Off In","Comp.Off Out","Comp.Off Balance");
+                              "Comp.Off In","Comp.Off Out","Comp.Off Balance");*/
+
+        $table_column = array("Employee Code","Name","Date",
+                            "SL Balance",  
+                            "EL Balance",
+                            "Comp.Off Balance");
 
         $column = 0;
 
@@ -721,21 +727,21 @@ class Leaves extends MX_Controller {
             $object->getActiveSheet()->SetCellValueByColumnAndRow(0,$rowCount,$row->emp_code);
             $object->getActiveSheet()->SetCellValueByColumnAndRow(1,$rowCount,$row->emp_name);
             $object->getActiveSheet()->SetCellValueByColumnAndRow(2,$rowCount,$row->balance_dt);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->trans_cd);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->application_dt);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->recomed_dt);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(6,$rowCount,$row->from_dt);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(7,$rowCount,$row->to_dt);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(8,$rowCount,$row->remarks);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(9,$rowCount,$row->ml_in);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(10,$rowCount,$row->ml_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(11,$rowCount,$row->ml_bal);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(12,$rowCount,$row->el_in);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(13,$rowCount,$row->el_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(14,$rowCount,$row->el_bal);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(15,$rowCount,$row->comp_off_in);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(16,$rowCount,$row->comp_off_out);
-            $object->getActiveSheet()->SetCellValueByColumnAndRow(17,$rowCount,$row->comp_off_bal);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->trans_cd);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->application_dt);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->recomed_dt);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(6,$rowCount,$row->from_dt);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(7,$rowCount,$row->to_dt);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(8,$rowCount,$row->remarks);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(9,$rowCount,$row->ml_in);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(10,$rowCount,$row->ml_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(3,$rowCount,$row->ml_bal);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(12,$rowCount,$row->el_in);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(13,$rowCount,$row->el_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(4,$rowCount,$row->el_bal);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(15,$rowCount,$row->comp_off_in);
+            //$object->getActiveSheet()->SetCellValueByColumnAndRow(16,$rowCount,$row->comp_off_out);
+            $object->getActiveSheet()->SetCellValueByColumnAndRow(5,$rowCount,$row->comp_off_bal);
             
         
             $rowCount++;

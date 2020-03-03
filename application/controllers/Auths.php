@@ -316,6 +316,16 @@ class Auths extends MX_Controller {
 
     }
 
+    //Whether HOD assigned to employee
+    public function chkAsn(){
+
+        $userId =   $_GET['user'];
+
+        $data   =   $this->Auth->f_chk_asn($userId);
+
+        echo $data->cnt_emp;
+    }
+
     /****************************** Pending Comp Off *********************************/
 
     /*public function pending_compoffs(){
